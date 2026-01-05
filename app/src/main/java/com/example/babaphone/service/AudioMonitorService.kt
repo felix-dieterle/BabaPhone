@@ -1,11 +1,13 @@
 package com.example.babaphone.service
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioRecord
@@ -15,6 +17,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.example.babaphone.MainActivity
 import com.example.babaphone.R
 import java.util.concurrent.atomic.AtomicBoolean
@@ -79,6 +82,17 @@ class AudioMonitorService : Service() {
         // Child mode: Record audio and stream it
         recordingThread = thread(start = true) {
             try {
+                // Check for RECORD_AUDIO permission
+                if (ContextCompat.checkSelfPermission(
+                        this@AudioMonitorService,
+                        Manifest.permission.RECORD_AUDIO
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Permission not granted, stop the service
+                    stopSelf()
+                    return@thread
+                }
+                
                 val bufferSize = AudioRecord.getMinBufferSize(
                     SAMPLE_RATE,
                     CHANNEL_CONFIG,
