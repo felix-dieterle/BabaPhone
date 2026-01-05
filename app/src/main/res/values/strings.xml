@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BabaPhone</string>
+    <string name="parent_mode">Parent Mode</string>
+    <string name="child_mode">Child Mode</string>
+    <string name="start_monitoring">Start Monitoring</string>
+    <string name="stop_monitoring">Stop Monitoring</string>
+    <string name="listening">Listening…</string>
+    <string name="connecting">Connecting…</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="select_mode">Select device mode</string>
+    <string name="connection_type">Connection Type</string>
+    <string name="wifi_direct">WiFi Direct</string>
+    <string name="wifi_network">WiFi Network</string>
+    <string name="mobile_data">Mobile Data</string>
+    <string name="sensitivity">Sensitivity</string>
+    <string name="volume">Volume</string>
+    <string name="permissions_required">Permissions Required</string>
+    <string name="grant_permissions">Please grant all required permissions to use BabaPhone</string>
+    <string name="monitoring_active">Baby Monitor Active</string>
+    <string name="audio_monitoring">Audio monitoring in progress</string>
+</resources>
