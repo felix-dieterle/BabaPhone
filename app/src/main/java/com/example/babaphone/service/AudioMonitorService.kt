@@ -73,8 +73,7 @@ class AudioMonitorService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         mode = intent?.getStringExtra("MODE") ?: "CHILD"
         deviceAddress = intent?.getStringExtra("DEVICE_ADDRESS") ?: ""
-        devicePort = intent?.getIntExtra("DEVICE_PORT", NetworkDiscoveryManager.DEFAULT_PORT) 
-            ?: NetworkDiscoveryManager.DEFAULT_PORT
+        devicePort = intent?.getIntExtra("DEVICE_PORT", NetworkDiscoveryManager.DEFAULT_PORT) ?: NetworkDiscoveryManager.DEFAULT_PORT
         deviceName = intent?.getStringExtra("DEVICE_NAME") ?: Build.MODEL
         
         startForeground(NOTIFICATION_ID, createNotification())
@@ -204,6 +203,7 @@ class AudioMonitorService : Service() {
             override fun onAudioDataReceived(data: ByteArray, size: Int) {
                 // Validate size is even (2 bytes per short)
                 if (size % 2 != 0) {
+                    android.util.Log.w("AudioMonitorService", "Received odd-sized audio buffer: $size bytes")
                     return
                 }
                 

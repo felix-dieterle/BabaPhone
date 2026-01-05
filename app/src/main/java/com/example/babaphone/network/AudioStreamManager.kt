@@ -39,7 +39,11 @@ class AudioStreamManager {
                 while (isRunning.get()) {
                     try {
                         // Close previous client if exists
-                        clientSocket?.close()
+                        clientSocket?.let {
+                            if (!it.isClosed) {
+                                it.close()
+                            }
+                        }
                         
                         clientSocket = serverSocket?.accept()
                         Log.d(TAG, "Client connected")
