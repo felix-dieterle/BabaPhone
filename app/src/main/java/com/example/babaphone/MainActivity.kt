@@ -9,11 +9,15 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.babaphone.adapter.DeviceAdapter
 import com.example.babaphone.databinding.ActivityMainBinding
+import com.example.babaphone.network.DeviceInfo
 import com.example.babaphone.service.AudioMonitorService
 
 class MainActivity : AppCompatActivity() {
@@ -22,12 +26,35 @@ class MainActivity : AppCompatActivity() {
     private var monitorService: AudioMonitorService? = null
     private var isServiceBound = false
     private var isMonitoring = false
+    private lateinit var deviceAdapter: DeviceAdapter
+    private var selectedDevice: DeviceInfo? = null
     
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as AudioMonitorService.LocalBinder
             monitorService = binder.getService()
             isServiceBound = true
+            
+            // Set up audio level callback for child mode
+            monitorService?.setAudioLevelCallback { level ->
+                runOnUiThread {
+                    binding.audioLevelBar.progress = (level * 100).toInt()
+                }
+            }
+            
+            // Set up device discovery callback for parent mode
+            monitorService?.setDeviceDiscoveryCallback(
+                onDeviceFound = { device ->
+                    runOnUiThread {
+                        deviceAdapter.addDevice(device)
+                    }
+                },
+                onDeviceLost = { device ->
+                    runOnUiThread {
+                        deviceAdapter.removeDevice(device)
+                    }
+                }
+            )
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -57,6 +84,34 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun setupUI() {
+        // Set up device list adapter
+        deviceAdapter = DeviceAdapter(mutableListOf()) { device ->
+            selectedDevice = device
+            Toast.makeText(this, "Selected: ${device.name}", Toast.LENGTH_SHORT).show()
+        }
+        binding.devicesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = deviceAdapter
+        }
+        
+        // Show/hide UI elements based on mode
+        binding.modeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.parentModeRadio -> {
+                    binding.devicesLabel.visibility = View.VISIBLE
+                    binding.devicesRecyclerView.visibility = View.VISIBLE
+                    binding.audioLevelLabel.visibility = View.GONE
+                    binding.audioLevelBar.visibility = View.GONE
+                }
+                R.id.childModeRadio -> {
+                    binding.devicesLabel.visibility = View.GONE
+                    binding.devicesRecyclerView.visibility = View.GONE
+                    binding.audioLevelLabel.visibility = View.VISIBLE
+                    binding.audioLevelBar.visibility = View.VISIBLE
+                }
+            }
+        }
+        
         binding.startStopButton.setOnClickListener {
             if (isMonitoring) {
                 stopMonitoring()
@@ -112,8 +167,19 @@ class MainActivity : AppCompatActivity() {
         }
         
         val isParentMode = binding.parentModeRadio.isChecked
+        
+        // For parent mode, check if a device is selected
+        if (isParentMode && selectedDevice == null && deviceAdapter.itemCount == 0) {
+            Toast.makeText(this, getString(R.string.searching_devices), Toast.LENGTH_SHORT).show()
+        }
+        
         val intent = Intent(this, AudioMonitorService::class.java).apply {
             putExtra("MODE", if (isParentMode) "PARENT" else "CHILD")
+            selectedDevice?.let {
+                putExtra("DEVICE_ADDRESS", it.address)
+                putExtra("DEVICE_PORT", it.port)
+                putExtra("DEVICE_NAME", it.name)
+            }
         }
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -137,6 +203,8 @@ class MainActivity : AppCompatActivity() {
         stopService(Intent(this, AudioMonitorService::class.java))
         monitorService = null
         isMonitoring = false
+        selectedDevice = null
+        deviceAdapter.clear()
         updateUI()
     }
     

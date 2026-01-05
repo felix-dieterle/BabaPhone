@@ -19,11 +19,33 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
 
 ## Verwendung
 
+### Schnellstart
+
 1. Starten Sie die App auf beiden Geräten
-2. Wählen Sie auf einem Gerät "Eltern-Modus" (Empfänger)
-3. Wählen Sie auf dem anderen Gerät "Kind-Modus" (Sender)
-4. Drücken Sie "Start Monitoring" auf beiden Geräten
-5. Passen Sie die Empfindlichkeit und Lautstärke nach Bedarf an
+2. **Auf dem Kind-Gerät** (beim Baby):
+   - Wählen Sie "Kind-Modus"
+   - Drücken Sie "Start Monitoring"
+   - Das Gerät registriert sich automatisch im Netzwerk
+   - Sie sehen einen Live-Audio-Level-Indikator
+3. **Auf dem Eltern-Gerät**:
+   - Wählen Sie "Eltern-Modus"
+   - Warten Sie, bis das Kind-Gerät in der Liste erscheint
+   - Tippen Sie auf das gewünschte Kind-Gerät, um es auszuwählen
+   - Drücken Sie "Start Monitoring"
+4. Passen Sie die Empfindlichkeit und Lautstärke nach Bedarf an
+
+### Funktionsweise
+
+- **Automatische Geräteerkennung**: Die App verwendet Network Service Discovery (NSD/mDNS), um Geräte im gleichen WLAN-Netzwerk automatisch zu finden
+- **Geräte-Identifikation**: Jedes Kind-Gerät wird mit seinem Gerätenamen identifiziert (z.B. "Samsung Galaxy S21")
+- **Audio-Streaming**: Wenn der Geräuschpegel die eingestellte Empfindlichkeit überschreitet, wird das Audio über TCP/IP an das Eltern-Gerät gestreamt
+- **Live-Feedback**: Im Kind-Modus sehen Sie einen visuellen Indikator für den aktuellen Geräuschpegel
+
+### Wichtige Hinweise
+
+- Beide Geräte müssen im **gleichen WLAN-Netzwerk** verbunden sein
+- Das Kind-Gerät muss **zuerst** gestartet werden, damit es vom Eltern-Gerät gefunden werden kann
+- Die Audio-Übertragung erfolgt nur, wenn der Geräuschpegel die eingestellte Empfindlichkeit überschreitet
 
 ## Berechtigungen
 
