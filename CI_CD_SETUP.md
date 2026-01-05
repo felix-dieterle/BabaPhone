@@ -28,9 +28,11 @@ With this configuration, pull requests cannot be merged unless all tests pass.
 
 The `.github/workflows/android-release.yml` workflow runs automatically when code is merged to main:
 
-- Builds a release APK
+- Builds a signed release APK (using debug keystore)
 - Creates a GitHub release with automatic versioning
 - Uploads the APK as a release asset
+
+**Note:** Release builds are signed with the debug keystore, which is suitable for open-source projects and allows the APK to be installed on Android devices without "invalid package" errors.
 
 ## Local Testing
 
