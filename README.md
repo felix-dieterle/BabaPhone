@@ -4,12 +4,13 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
 
 ## Features
 
-- **WLAN-Unterstützung** (Standard): Direkte Verbindung zwischen Geräten über WiFi
-- **Mobiler Hotspot**: Verbindung über einen mobilen Hotspot
-- **Mobile Daten**: Unterstützung für Verbindung über mobile Daten (mit Backend)
-- **Mehrere Kindgeräte**: Unterstützt mehrere Baby-Einheiten gleichzeitig
-- **Standard Babyphone-Funktionalität**: Audio-Überwachung ohne Kamera
-- **Eltern- und Kind-Modus**: Wählen Sie, ob das Gerät als Empfänger (Eltern) oder Sender (Kind) fungiert
+- **WLAN-Unterstützung** (Standard): Direkte Verbindung zwischen Geräten über WiFi ✅
+- **Mobiler Hotspot**: Verbindung über einen mobilen Hotspot ✅
+- **Mobile Daten**: Unterstützung für Verbindung über mobile Daten (mit Backend) 🚧 *In Planung - Backend wird benötigt*
+- **Mehrere Kindgeräte**: Unterstützt mehrere Baby-Einheiten gleichzeitig ✅
+- **Standard Babyphone-Funktionalität**: Audio-Überwachung ohne Kamera ✅
+- **Eltern- und Kind-Modus**: Wählen Sie, ob das Gerät als Empfänger (Eltern) oder Sender (Kind) fungiert ✅
+- **Visuelle Modi-Unterscheidung**: Verschiedene Symbole für Kind-Modus (📱👶) und Eltern-Modus (📱👨‍👩‍👧) ✅
 
 ## Installation
 
@@ -46,6 +47,15 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
 - Beide Geräte müssen im **gleichen WLAN-Netzwerk** verbunden sein
 - Das Kind-Gerät muss **zuerst** gestartet werden, damit es vom Eltern-Gerät gefunden werden kann
 - Die Audio-Übertragung erfolgt nur, wenn der Geräuschpegel die eingestellte Empfindlichkeit überschreitet
+
+### Verbindungsmodi
+
+**Aktuell verfügbar:**
+- **WLAN/WiFi**: Beide Geräte im gleichen Netzwerk (Standard) ✅
+- **Mobiler Hotspot**: Ein Gerät erstellt einen Hotspot, das andere verbindet sich ✅
+
+**In Planung:**
+- **Mobile Daten Modus**: Für die Verbindung über mobile Daten ist ein Backend-Server erforderlich. Die App-Struktur ist bereits vorbereitet (OkHttp, Gson Bibliotheken sind eingebunden), aber das Backend muss noch implementiert werden. 🚧
 
 ## Berechtigungen
 
