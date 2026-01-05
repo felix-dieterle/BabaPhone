@@ -22,6 +22,7 @@ import com.example.babaphone.MainActivity
 import com.example.babaphone.R
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
+import kotlin.math.sqrt
 
 class AudioMonitorService : Service() {
     
@@ -203,7 +204,7 @@ class AudioMonitorService : Service() {
         for (i in 0 until size) {
             sum += (buffer[i] * buffer[i]).toLong()
         }
-        val rms = Math.sqrt((sum / size).toDouble())
+        val rms = sqrt((sum / size).toDouble())
         return (rms / Short.MAX_VALUE).toFloat()
     }
     
