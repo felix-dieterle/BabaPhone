@@ -202,6 +202,11 @@ class AudioMonitorService : Service() {
         // Set up audio stream receiver
         audioStreamManager?.setAudioDataListener(object : AudioStreamManager.AudioDataListener {
             override fun onAudioDataReceived(data: ByteArray, size: Int) {
+                // Validate size is even (2 bytes per short)
+                if (size % 2 != 0) {
+                    return
+                }
+                
                 // Convert bytes back to shorts and play
                 val shortBuffer = ShortArray(size / 2)
                 val byteBuffer = ByteBuffer.wrap(data)
@@ -274,7 +279,7 @@ class AudioMonitorService : Service() {
         for (i in 0 until size) {
             sum += (buffer[i] * buffer[i]).toLong()
         }
-        val rms = Math.sqrt((sum / size).toDouble())
+        val rms = kotlin.math.sqrt((sum / size).toDouble())
         return (rms / Short.MAX_VALUE).toFloat()
     }
     

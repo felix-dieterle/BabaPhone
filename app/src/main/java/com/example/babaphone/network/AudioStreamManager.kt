@@ -38,6 +38,9 @@ class AudioStreamManager {
                 isRunning.set(true)
                 while (isRunning.get()) {
                     try {
+                        // Close previous client if exists
+                        clientSocket?.close()
+                        
                         clientSocket = serverSocket?.accept()
                         Log.d(TAG, "Client connected")
                     } catch (e: Exception) {
@@ -56,8 +59,11 @@ class AudioStreamManager {
     fun sendAudioData(data: ByteArray) {
         try {
             clientSocket?.getOutputStream()?.write(data)
+        } catch (e: java.net.SocketException) {
+            // Client disconnected, expected during normal operation
+            Log.d(TAG, "Client disconnected")
         } catch (e: Exception) {
-            // Client disconnected, ignore
+            Log.e(TAG, "Error sending audio data", e)
         }
     }
     
