@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Soft background circle -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10 Z" />
+    
+    <!-- Baby icon (simple baby face) -->
+    <path
+        android:fillColor="#FFCCBC"
+        android:pathData="M60,35 A18,18 0 1,1 60,71 A18,18 0 1,1 60,35 Z" />
+    
+    <!-- Baby eyes -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M54,48 A3,3 0 1,1 54,54 A3,3 0 1,1 54,48 Z" />
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M66,48 A3,3 0 1,1 66,54 A3,3 0 1,1 66,48 Z" />
+    
+    <!-- Baby smile -->
+    <path
+        android:strokeColor="#5D4037"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M54,58 Q60,62 66,58" />
+    
+    <!-- Phone icon (simplified smartphone) -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M75,75 L105,75 L105,105 L75,105 Z
+                         M77,77 L103,77 L103,103 L77,103 Z" />
+    
+    <!-- Phone screen -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:pathData="M80,80 L100,80 L100,100 L80,100 Z" />
+    
+    <!-- Phone speaker dots -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M88,85 A1,1 0 1,1 88,87 A1,1 0 1,1 88,85 Z" />
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M90,85 A1,1 0 1,1 90,87 A1,1 0 1,1 90,85 Z" />
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M92,85 A1,1 0 1,1 92,87 A1,1 0 1,1 92,85 Z" />
+    
+</vector>

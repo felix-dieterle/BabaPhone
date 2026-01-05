@@ -26,4 +26,5 @@
     <string name="no_devices_found">No child devices found. Make sure child device is on the same network.</string>
     <string name="searching_devices">Searching for devices…</string>
     <string name="connected_to">Connected to %1$s</string>
+    <string name="mode_icon_description">Mode Icon</string>
 </resources>
