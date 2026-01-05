@@ -20,4 +20,10 @@
     <string name="grant_permissions">Please grant all required permissions to use BabaPhone</string>
     <string name="monitoring_active">Baby Monitor Active</string>
     <string name="audio_monitoring">Audio monitoring in progress</string>
+    <string name="available_devices">Available Child Devices:</string>
+    <string name="audio_level">Audio Level:</string>
+    <string name="device_name">Device Name</string>
+    <string name="no_devices_found">No child devices found. Make sure child device is on the same network.</string>
+    <string name="searching_devices">Searching for devices…</string>
+    <string name="connected_to">Connected to %1$s</string>
 </resources>

@@ -68,6 +68,53 @@
         app:layout_constraintTop_toBottomOf="@id/modeRadioGroup"
         android:layout_marginTop="32dp" />
 
+    <!-- Device list for Parent Mode -->
+    <TextView
+        android:id="@+id/devicesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/available_devices"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusText"
+        android:layout_marginTop="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/devicesRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devicesLabel"
+        android:layout_marginTop="8dp" />
+
+    <!-- Audio level indicator for Child Mode -->
+    <TextView
+        android:id="@+id/audioLevelLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/audio_level"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusText"
+        android:layout_marginTop="16dp" />
+
+    <ProgressBar
+        android:id="@+id/audioLevelBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/audioLevelLabel"
+        android:layout_marginTop="8dp" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/startStopButton"
         android:layout_width="0dp"
@@ -76,7 +123,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusText"
+        app:layout_constraintTop_toBottomOf="@id/audioLevelBar"
         app:layout_constraintWidth_percent="0.8"
         android:layout_marginTop="32dp" />
 

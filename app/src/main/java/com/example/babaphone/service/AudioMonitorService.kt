@@ -20,6 +20,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.example.babaphone.MainActivity
 import com.example.babaphone.R
+import com.example.babaphone.network.AudioStreamManager
+import com.example.babaphone.network.DeviceInfo
+import com.example.babaphone.network.NetworkDiscoveryManager
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
 
@@ -34,6 +39,15 @@ class AudioMonitorService : Service() {
     private var audioRecord: AudioRecord? = null
     private var audioTrack: AudioTrack? = null
     private var recordingThread: Thread? = null
+    
+    private var networkDiscovery: NetworkDiscoveryManager? = null
+    private var audioStreamManager: AudioStreamManager? = null
+    private var audioLevelCallback: ((Float) -> Unit)? = null
+    private var deviceDiscoveryCallback: Pair<((DeviceInfo) -> Unit), ((DeviceInfo) -> Unit)>? = null
+    
+    private var deviceName: String = ""
+    private var deviceAddress: String = ""
+    private var devicePort: Int = NetworkDiscoveryManager.DEFAULT_PORT
     
     companion object {
         private const val CHANNEL_ID = "AudioMonitorChannel"
@@ -58,6 +72,10 @@ class AudioMonitorService : Service() {
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         mode = intent?.getStringExtra("MODE") ?: "CHILD"
+        deviceAddress = intent?.getStringExtra("DEVICE_ADDRESS") ?: ""
+        devicePort = intent?.getIntExtra("DEVICE_PORT", NetworkDiscoveryManager.DEFAULT_PORT) 
+            ?: NetworkDiscoveryManager.DEFAULT_PORT
+        deviceName = intent?.getStringExtra("DEVICE_NAME") ?: Build.MODEL
         
         startForeground(NOTIFICATION_ID, createNotification())
         
@@ -71,6 +89,10 @@ class AudioMonitorService : Service() {
     private fun startAudioMonitoring() {
         isRunning.set(true)
         
+        // Initialize network components
+        networkDiscovery = NetworkDiscoveryManager(this)
+        audioStreamManager = AudioStreamManager()
+        
         if (mode == "CHILD") {
             startChildMode()
         } else {
@@ -80,6 +102,14 @@ class AudioMonitorService : Service() {
     
     private fun startChildMode() {
         // Child mode: Record audio and stream it
+        // First, register as a discoverable service
+        networkDiscovery?.registerService(deviceName, NetworkDiscoveryManager.DEFAULT_PORT)
+        
+        // Start audio streaming server
+        audioStreamManager?.startServer(NetworkDiscoveryManager.DEFAULT_PORT) {
+            // Server ready
+        }
+        
         recordingThread = thread(start = true) {
             try {
                 // Check for RECORD_AUDIO permission
@@ -131,9 +161,18 @@ class AudioMonitorService : Service() {
                     if (readResult > 0) {
                         // Check audio level against sensitivity
                         val audioLevel = calculateAudioLevel(buffer, readResult)
+                        
+                        // Update UI with audio level
+                        audioLevelCallback?.invoke(audioLevel)
+                        
                         if (audioLevel > sensitivity) {
-                            // In a real implementation, this would stream to parent device
-                            // For now, we just process it locally
+                            // Convert to bytes and send over network
+                            val byteBuffer = ByteBuffer.allocate(readResult * 2)
+                            byteBuffer.order(ByteOrder.LITTLE_ENDIAN)
+                            for (i in 0 until readResult) {
+                                byteBuffer.putShort(buffer[i])
+                            }
+                            audioStreamManager?.sendAudioData(byteBuffer.array())
                         }
                     }
                 }
@@ -148,7 +187,39 @@ class AudioMonitorService : Service() {
     }
     
     private fun startParentMode() {
-        // Parent mode: Receive and play audio
+        // Parent mode: Discover child devices and receive audio
+        networkDiscovery?.setDeviceDiscoveryListener(object : NetworkDiscoveryManager.DeviceDiscoveryListener {
+            override fun onDeviceFound(device: DeviceInfo) {
+                deviceDiscoveryCallback?.first?.invoke(device)
+            }
+            
+            override fun onDeviceLost(device: DeviceInfo) {
+                deviceDiscoveryCallback?.second?.invoke(device)
+            }
+        })
+        networkDiscovery?.startDiscovery()
+        
+        // Set up audio stream receiver
+        audioStreamManager?.setAudioDataListener(object : AudioStreamManager.AudioDataListener {
+            override fun onAudioDataReceived(data: ByteArray, size: Int) {
+                // Convert bytes back to shorts and play
+                val shortBuffer = ShortArray(size / 2)
+                val byteBuffer = ByteBuffer.wrap(data)
+                byteBuffer.order(ByteOrder.LITTLE_ENDIAN)
+                for (i in shortBuffer.indices) {
+                    shortBuffer[i] = byteBuffer.short
+                }
+                audioTrack?.write(shortBuffer, 0, shortBuffer.size)
+            }
+        })
+        
+        // If a specific device is selected, connect to it
+        if (deviceAddress.isNotEmpty()) {
+            audioStreamManager?.connectToDevice(deviceAddress, devicePort) {
+                // Connected
+            }
+        }
+        
         recordingThread = thread(start = true) {
             try {
                 val bufferSize = AudioTrack.getMinBufferSize(
@@ -181,10 +252,10 @@ class AudioMonitorService : Service() {
                     )
                 }
                 
+                audioTrack?.setVolume(volume)
                 audioTrack?.play()
                 
-                // In a real implementation, this would receive audio from child devices
-                // For now, we just keep the service running
+                // Keep service running
                 while (isRunning.get()) {
                     Thread.sleep(100)
                 }
@@ -216,6 +287,17 @@ class AudioMonitorService : Service() {
         audioTrack?.setVolume(volume)
     }
     
+    fun setAudioLevelCallback(callback: (Float) -> Unit) {
+        audioLevelCallback = callback
+    }
+    
+    fun setDeviceDiscoveryCallback(
+        onDeviceFound: (DeviceInfo) -> Unit,
+        onDeviceLost: (DeviceInfo) -> Unit
+    ) {
+        deviceDiscoveryCallback = Pair(onDeviceFound, onDeviceLost)
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
         isRunning.set(false)
@@ -228,6 +310,13 @@ class AudioMonitorService : Service() {
         audioTrack?.stop()
         audioTrack?.release()
         audioTrack = null
+        
+        networkDiscovery?.stopDiscovery()
+        networkDiscovery?.unregisterService()
+        networkDiscovery = null
+        
+        audioStreamManager?.stop()
+        audioStreamManager = null
     }
     
     private fun createNotificationChannel() {
