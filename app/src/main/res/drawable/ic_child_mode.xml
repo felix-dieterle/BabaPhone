@@ -7,12 +7,12 @@
     
     <!-- Soft background circle -->
     <path
-        android:fillColor="#E3F2FD"
+        android:fillColor="@color/baby_blue"
         android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10 Z" />
     
     <!-- Baby icon (simple baby face) -->
     <path
-        android:fillColor="#FFCCBC"
+        android:fillColor="@color/gentle_peach"
         android:pathData="M60,35 A18,18 0 1,1 60,71 A18,18 0 1,1 60,35 Z" />
     
     <!-- Baby eyes -->
@@ -38,7 +38,7 @@
     
     <!-- Phone screen -->
     <path
-        android:fillColor="#E3F2FD"
+        android:fillColor="@color/baby_blue"
         android:pathData="M80,80 L100,80 L100,100 L80,100 Z" />
     
     <!-- Phone speaker dots -->

@@ -7,7 +7,7 @@
     
     <!-- Soft background circle -->
     <path
-        android:fillColor="#F3E5F5"
+        android:fillColor="@color/soft_purple"
         android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10 Z" />
     
     <!-- Parent figures (two simplified people) -->
@@ -39,7 +39,7 @@
     
     <!-- Phone screen -->
     <path
-        android:fillColor="#F3E5F5"
+        android:fillColor="@color/soft_purple"
         android:pathData="M80,80 L100,80 L100,100 L80,100 Z" />
     
     <!-- Phone speaker dots -->
