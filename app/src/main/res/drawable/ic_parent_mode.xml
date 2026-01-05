@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Soft background circle -->
+    <path
+        android:fillColor="@color/soft_purple"
+        android:pathData="M60,10 A50,50 0 1,1 60,110 A50,50 0 1,1 60,10 Z" />
+    
+    <!-- Parent figures (two simplified people) -->
+    <!-- Mother head -->
+    <path
+        android:fillColor="#CE93D8"
+        android:pathData="M45,35 A10,10 0 1,1 45,55 A10,10 0 1,1 45,35 Z" />
+    
+    <!-- Father head -->
+    <path
+        android:fillColor="#9575CD"
+        android:pathData="M65,35 A10,10 0 1,1 65,55 A10,10 0 1,1 65,35 Z" />
+    
+    <!-- Mother body (simplified) -->
+    <path
+        android:fillColor="#CE93D8"
+        android:pathData="M35,55 L35,70 L55,70 L55,55 Q45,50 35,55 Z" />
+    
+    <!-- Father body (simplified) -->
+    <path
+        android:fillColor="#9575CD"
+        android:pathData="M57,55 L57,70 L73,70 L73,55 Q65,50 57,55 Z" />
+    
+    <!-- Phone icon (simplified smartphone) -->
+    <path
+        android:fillColor="#BA68C8"
+        android:pathData="M75,75 L105,75 L105,105 L75,105 Z
+                         M77,77 L103,77 L103,103 L77,103 Z" />
+    
+    <!-- Phone screen -->
+    <path
+        android:fillColor="@color/soft_purple"
+        android:pathData="M80,80 L100,80 L100,100 L80,100 Z" />
+    
+    <!-- Phone speaker dots -->
+    <path
+        android:fillColor="#BA68C8"
+        android:pathData="M88,85 A1,1 0 1,1 88,87 A1,1 0 1,1 88,85 Z" />
+    <path
+        android:fillColor="#BA68C8"
+        android:pathData="M90,85 A1,1 0 1,1 90,87 A1,1 0 1,1 90,85 Z" />
+    <path
+        android:fillColor="#BA68C8"
+        android:pathData="M92,85 A1,1 0 1,1 92,87 A1,1 0 1,1 92,85 Z" />
+    
+</vector>

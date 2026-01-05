@@ -102,12 +102,14 @@ class MainActivity : AppCompatActivity() {
                     binding.devicesRecyclerView.visibility = View.VISIBLE
                     binding.audioLevelLabel.visibility = View.GONE
                     binding.audioLevelBar.visibility = View.GONE
+                    binding.modeIcon.setImageResource(R.drawable.ic_parent_mode)
                 }
                 R.id.childModeRadio -> {
                     binding.devicesLabel.visibility = View.GONE
                     binding.devicesRecyclerView.visibility = View.GONE
                     binding.audioLevelLabel.visibility = View.VISIBLE
                     binding.audioLevelBar.visibility = View.VISIBLE
+                    binding.modeIcon.setImageResource(R.drawable.ic_child_mode)
                 }
             }
         }
