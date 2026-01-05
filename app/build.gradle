@@ -44,10 +44,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     
-    // WebRTC for audio streaming
-    implementation 'org.webrtc:google-webrtc:1.0.32006'
-    
-    // Network and connectivity
+    // Network and connectivity (for future WebRTC/P2P implementation)
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     
