@@ -31,17 +31,10 @@ class LocationMockTest {
     private lateinit var locationManager: LocationManager
     
     @get:Rule
-    val permissionRule: GrantPermissionRule = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        GrantPermissionRule.grant(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-    } else {
-        GrantPermissionRule.grant(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-    }
+    val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     
     @Before
     fun setup() {
@@ -93,9 +86,8 @@ class LocationMockTest {
         assertEquals(6.0, locations[2].altitude, 0.1)
         assertEquals(9.0, locations[3].altitude, 0.1)
         
-        // Verify horizontal movement
-        assertTrue(locations[3].latitude == locations[4].latitude || 
-                   locations[3].longitude == locations[4].longitude)
+        // Verify horizontal movement - at least one coordinate should change
+        assertNotEquals(locations[3].latitude, locations[4].latitude)
     }
     
     @Test

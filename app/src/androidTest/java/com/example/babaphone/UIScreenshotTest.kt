@@ -7,6 +7,8 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -67,26 +69,27 @@ class UIScreenshotTest {
     @Test
     fun captureScreenshots_ParentMode_DefaultState() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready - verify main UI element is displayed
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Thread.sleep(500)  // Brief wait for animations to complete
             
             // Capture screenshot of Parent Mode (default)
             takeScreenshot("01_parent_mode_default")
-            
-            // Check that we're in parent mode by default
-            Thread.sleep(500)
         }
     }
     
     @Test
     fun captureScreenshots_ChildMode_DefaultState() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Switch to Child Mode
             onView(withId(R.id.childModeRadio)).perform(click())
-            Thread.sleep(500)
+            
+            // Verify child mode UI is displayed
+            onView(withId(R.id.audioLevelLabel)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Thread.sleep(300)  // Brief wait for UI transition
             
             // Capture screenshot of Child Mode
             takeScreenshot("02_child_mode_default")
@@ -96,12 +99,12 @@ class UIScreenshotTest {
     @Test
     fun captureScreenshots_ParentMode_WithDeviceList() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Ensure we're in Parent Mode (should be default)
             onView(withId(R.id.parentModeRadio)).perform(click())
-            Thread.sleep(500)
+            Thread.sleep(300)  // Brief wait for UI transition
             
             // Capture screenshot showing device list area
             takeScreenshot("03_parent_mode_device_list")
@@ -111,12 +114,15 @@ class UIScreenshotTest {
     @Test
     fun captureScreenshots_ChildMode_AudioLevelIndicator() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Switch to Child Mode to show audio level indicator
             onView(withId(R.id.childModeRadio)).perform(click())
-            Thread.sleep(500)
+            
+            // Verify audio level indicator is displayed
+            onView(withId(R.id.audioLevelBar)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Thread.sleep(300)  // Brief wait for UI transition
             
             // Capture screenshot showing audio level indicator
             takeScreenshot("04_child_mode_audio_indicator")
@@ -126,59 +132,67 @@ class UIScreenshotTest {
     @Test
     fun captureScreenshots_ParentMode_Landscape() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Rotate to landscape
             device.setOrientationLeft()
-            Thread.sleep(1000)
+            Thread.sleep(500)  // Wait for rotation animation
+            
+            // Verify UI is still displayed after rotation
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Capture screenshot in landscape orientation
             takeScreenshot("05_parent_mode_landscape")
             
             // Rotate back to portrait
             device.setOrientationNatural()
-            Thread.sleep(500)
+            Thread.sleep(300)
         }
     }
     
     @Test
     fun captureScreenshots_ChildMode_Landscape() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Switch to Child Mode
             onView(withId(R.id.childModeRadio)).perform(click())
-            Thread.sleep(500)
+            
+            // Verify child mode UI is displayed
+            onView(withId(R.id.audioLevelLabel)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Rotate to landscape
             device.setOrientationLeft()
-            Thread.sleep(1000)
+            Thread.sleep(500)  // Wait for rotation animation
             
             // Capture screenshot in landscape orientation
             takeScreenshot("06_child_mode_landscape")
             
             // Rotate back to portrait
             device.setOrientationNatural()
-            Thread.sleep(500)
+            Thread.sleep(300)
         }
     }
     
     @Test
     fun captureScreenshots_DifferentSensitivityLevels() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Switch to Child Mode to show sensitivity controls
             onView(withId(R.id.childModeRadio)).perform(click())
-            Thread.sleep(500)
+            
+            // Verify sensitivity controls are displayed
+            onView(withId(R.id.sensitivitySeekBar)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Thread.sleep(300)  // Brief wait for UI transition
             
             // Capture with default sensitivity
             takeScreenshot("07_sensitivity_default")
             
-            // Note: Sensitivity SeekBar interaction would require more complex setup
+            // Note: SeekBar interaction would require more complex setup
             // This captures the default state which shows the controls
         }
     }
@@ -186,15 +200,18 @@ class UIScreenshotTest {
     @Test
     fun captureScreenshots_AllUIElements() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            // Wait for UI to settle
-            Thread.sleep(1000)
+            // Wait for UI to be ready
+            onView(withId(R.id.titleText)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             
             // Capture full UI with all elements visible (Parent Mode shows most elements)
             takeScreenshot("08_full_ui_parent_mode")
             
             // Switch to Child Mode for complete coverage
             onView(withId(R.id.childModeRadio)).perform(click())
-            Thread.sleep(500)
+            
+            // Verify child mode UI is displayed
+            onView(withId(R.id.audioLevelLabel)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Thread.sleep(300)  // Brief wait for UI transition
             
             takeScreenshot("09_full_ui_child_mode")
         }
