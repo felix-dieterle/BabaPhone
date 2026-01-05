@@ -2,6 +2,7 @@ package com.example.babaphone
 
 import org.junit.Test
 import org.junit.Assert.*
+import kotlin.math.sqrt
 
 /**
  * Unit tests for BabaPhone audio monitoring functionality
@@ -54,7 +55,7 @@ class BabaPhoneUnitTest {
         for (i in 0 until size) {
             sum += (buffer[i] * buffer[i]).toLong()
         }
-        val rms = Math.sqrt((sum / size).toDouble())
+        val rms = sqrt((sum / size).toDouble())
         return (rms / Short.MAX_VALUE).toFloat()
     }
 }
