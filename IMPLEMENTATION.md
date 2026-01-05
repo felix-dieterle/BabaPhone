@@ -112,18 +112,26 @@ Properly requests and handles:
 
 ## What Is Ready But Not Fully Implemented
 
-### Network Communication 🚧
+### Network Communication ✅
 
-**Structure in place for**:
-- WiFi Direct device discovery (permissions declared)
-- P2P audio streaming (OkHttp dependency included)
-- Mobile data fallback (structure ready)
+**Implemented**:
+- Network Service Discovery (NSD) for device discovery
+- TCP socket-based audio streaming
+- Automatic device registration and discovery on local network
+- Device selection UI in parent mode
+- Real-time audio level visualization in child mode
 
-**Next steps would be**:
-- Implement WiFi Direct peer discovery
-- Add WebSocket or WebRTC for audio streaming
-- Implement device pairing/connection UI
-- Add network state management
+**How it works**:
+1. **Child Mode**: 
+   - Registers device as a network service using NSD (_babaphone._tcp)
+   - Starts TCP server on port 8888
+   - Broadcasts audio when noise exceeds sensitivity threshold
+   
+2. **Parent Mode**: 
+   - Discovers child devices via NSD
+   - Displays list of available child devices
+   - Connects to selected device via TCP
+   - Receives and plays audio stream
 
 ### Multiple Child Devices 🚧
 
@@ -175,11 +183,12 @@ The workflow will now prevent merging PRs with failing tests.
 
 ## Known Limitations
 
-1. **No actual network streaming**: Audio is recorded/played locally but not streamed between devices yet
-2. **No encryption**: Future implementations should add end-to-end encryption
-3. **No device discovery UI**: Device pairing must be implemented
+1. **Devices must be on same WiFi network**: Network Service Discovery only works on local networks
+2. **No encryption**: Audio is transmitted without encryption (should be added for production)
+3. **Single connection**: Parent can only connect to one child device at a time
 4. **No phone call integration**: This requirement was unclear
-5. **No PHP backend**: Not needed until network streaming is implemented
+5. **No PHP backend**: Not needed for local network operation
+6. **No mobile data support**: Currently only works on WiFi networks
 
 ## Production Readiness
 
@@ -200,12 +209,15 @@ This is a **foundation/prototype** implementation. For production use, add:
 
 ✅ All structural requirements met
 ✅ Core audio functionality implemented
+✅ Network device discovery and connection implemented
+✅ Audio streaming between devices implemented
+✅ Visual audio level indicator in child mode
+✅ Device selection UI in parent mode
 ✅ CI/CD with test-based merge prevention
 ✅ Automatic releases on merge
 ✅ Complete documentation
 ✅ Security best practices
-🚧 Network streaming ready for implementation
-🚧 Multi-device support foundation ready
-🚧 Backend integration structure ready
+🚧 Multi-device support foundation ready (currently single connection)
+🚧 Backend integration structure ready (not needed for WiFi)
 
-The app provides a solid foundation for a baby monitor with all the requested CI/CD features. The core audio monitoring works locally, and the structure is ready for network features to be added.
+The app now provides a fully functional baby monitor with network connectivity. Parent devices can discover and connect to child devices on the same WiFi network, with real-time audio streaming and visual feedback.
