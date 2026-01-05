@@ -6,10 +6,24 @@ This repository includes automated CI/CD workflows for the BabaPhone Android app
 
 The `.github/workflows/android-ci.yml` workflow runs on every pull request and push to main:
 
+### Unit Tests and Build (test job)
 - Builds the app
 - Runs unit tests
 - Runs lint checks
 - Uploads test and lint results as artifacts
+
+### UI Screenshot Tests (ui-screenshot-tests job)
+- Launches Android emulator
+- Runs instrumented UI tests
+- Captures screenshots of the app from different states:
+  - Parent and Child modes
+  - Portrait and landscape orientations
+  - Different UI configurations
+- Tests location/GPS mocking for 3D movement simulation
+- Uploads screenshots as artifacts
+- Comments on PR with screenshot information
+
+See [SCREENSHOT_TESTING.md](SCREENSHOT_TESTING.md) for details on the screenshot testing infrastructure.
 
 ## Enabling Test-Based Merge Protection
 
@@ -19,6 +33,7 @@ To ensure tests prevent merges (as required), configure branch protection rules:
 2. Add a branch protection rule for `main`:
    - Check **Require status checks to pass before merging**
    - Select **Android CI / test** as required status check
+   - Optionally select **Android CI / ui-screenshot-tests** for screenshot verification
    - Check **Require branches to be up to date before merging**
 3. Save changes
 
@@ -50,6 +65,12 @@ To run tests locally:
 
 # Build release APK
 ./gradlew assembleRelease
+
+# Run instrumented tests (requires emulator or device)
+./gradlew connectedDebugAndroidTest
+
+# Pull screenshots from device after running UI tests
+adb pull /sdcard/Android/data/com.example.babaphone/files/screenshots/ ./screenshots/
 ```
 
 ## Requirements

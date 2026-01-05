@@ -54,6 +54,9 @@ Die App benötigt folgende Berechtigungen:
 - **Mikrofon**: Zum Aufnehmen von Audio vom Baby
 - **Netzwerk**: Zum Verbinden der Geräte
 - **Benachrichtigungen**: Für den Vordergrund-Dienst während der Überwachung
+- **Standort**: Benötigt von Android für WiFi Direct (wird nicht zur Ortung verwendet)
+
+**Hinweis**: Die Standortberechtigung wird nur für WiFi Direct benötigt und nicht zur Verfolgung des Gerätestandorts verwendet. Die App verfolgt nicht Ihren Standort.
 
 ## Entwicklung
 
@@ -80,7 +83,10 @@ Die App benötigt folgende Berechtigungen:
 Das Projekt verwendet GitHub Actions für:
 
 - **Continuous Integration**: Automatische Tests bei jedem Pull Request
+- **UI Screenshot Tests**: Automatische Screenshots der App aus verschiedenen Ansichten (Parent/Child Mode, Landscape/Portrait)
 - **Automatische Releases**: Erstellung einer neuen Version bei jedem Merge in main
+
+Weitere Details zu den Screenshot-Tests finden Sie in [SCREENSHOT_TESTING.md](SCREENSHOT_TESTING.md).
 
 ## Lizenz
 
