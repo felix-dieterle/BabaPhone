@@ -32,29 +32,28 @@ class SettingsActivity : AppCompatActivity() {
         binding.volumeValue.text = "$volume%"
         
         // Set up listeners
-        binding.sensitivitySeekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.sensitivityValue.text = "$progress%"
-            }
-            override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {
-                seekBar?.let {
-                    sharedPreferences.edit().putInt(PREF_SENSITIVITY, it.progress).apply()
-                }
-            }
-        })
+        binding.sensitivitySeekBar.setOnSeekBarChangeListener(
+            createSeekBarListener(binding.sensitivityValue, PREF_SENSITIVITY)
+        )
         
-        binding.volumeSeekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.volumeValue.text = "$progress%"
+        binding.volumeSeekBar.setOnSeekBarChangeListener(
+            createSeekBarListener(binding.volumeValue, PREF_VOLUME)
+        )
+    }
+    
+    private fun createSeekBarListener(
+        valueTextView: android.widget.TextView,
+        preferenceKey: String
+    ) = object : android.widget.SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
+            valueTextView.text = "$progress%"
+        }
+        override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
+        override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {
+            seekBar?.let {
+                sharedPreferences.edit().putInt(preferenceKey, it.progress).apply()
             }
-            override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {
-                seekBar?.let {
-                    sharedPreferences.edit().putInt(PREF_VOLUME, it.progress).apply()
-                }
-            }
-        })
+        }
     }
     
     override fun onSupportNavigateUp(): Boolean {
