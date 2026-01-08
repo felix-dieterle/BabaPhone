@@ -27,4 +27,8 @@
     <string name="searching_devices">Searching for devices…</string>
     <string name="connected_to">Connected to %1$s</string>
     <string name="mode_icon_description">Mode Icon</string>
+    <string name="settings">Settings</string>
+    <string name="settings_description">Adjust sensitivity and volume settings</string>
+    <string name="sensitivity_description">Adjust the noise level threshold that triggers audio streaming</string>
+    <string name="volume_description">Adjust the playback volume for received audio</string>
 </resources>

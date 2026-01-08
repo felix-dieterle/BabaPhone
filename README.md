@@ -11,6 +11,8 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
 - **Standard Babyphone-Funktionalität**: Audio-Überwachung ohne Kamera ✅
 - **Eltern- und Kind-Modus**: Wählen Sie, ob das Gerät als Empfänger (Eltern) oder Sender (Kind) fungiert ✅
 - **Visuelle Modi-Unterscheidung**: Verschiedene Symbole für Kind-Modus (📱👶) und Eltern-Modus (📱👨‍👩‍👧) ✅
+- **Einstellungen-Menü**: Einfacher Zugriff auf Empfindlichkeit und Lautstärke über das Menü ✅
+- **Persistente Einstellungen**: Einstellungen werden automatisch gespeichert und beim nächsten Start wiederhergestellt ✅
 
 ## Installation
 
@@ -33,7 +35,11 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
    - Warten Sie, bis das Kind-Gerät in der Liste erscheint
    - Tippen Sie auf das gewünschte Kind-Gerät, um es auszuwählen
    - Drücken Sie "Start Monitoring"
-4. Passen Sie die Empfindlichkeit und Lautstärke nach Bedarf an
+4. **Einstellungen anpassen** (optional):
+   - Tippen Sie auf das Einstellungen-Symbol (⚙) in der Menüleiste
+   - Passen Sie die Empfindlichkeit an (wie leicht soll Audio übertragen werden)
+   - Passen Sie die Lautstärke an (wie laut soll das Audio abgespielt werden)
+   - Einstellungen werden automatisch gespeichert
 
 ### Funktionsweise
 

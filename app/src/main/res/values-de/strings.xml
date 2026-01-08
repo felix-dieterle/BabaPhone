@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BabaPhone</string>
+    <string name="parent_mode">Eltern-Modus</string>
+    <string name="child_mode">Kind-Modus</string>
+    <string name="start_monitoring">Überwachung starten</string>
+    <string name="stop_monitoring">Überwachung stoppen</string>
+    <string name="listening">Lausche…</string>
+    <string name="connecting">Verbinde…</string>
+    <string name="connected">Verbunden</string>
+    <string name="disconnected">Getrennt</string>
+    <string name="select_mode">Gerätemodus auswählen</string>
+    <string name="connection_type">Verbindungstyp</string>
+    <string name="wifi_direct">WiFi Direct</string>
+    <string name="wifi_network">WiFi-Netzwerk</string>
+    <string name="mobile_data">Mobile Daten</string>
+    <string name="sensitivity">Empfindlichkeit</string>
+    <string name="volume">Lautstärke</string>
+    <string name="permissions_required">Berechtigungen erforderlich</string>
+    <string name="grant_permissions">Bitte gewähren Sie alle erforderlichen Berechtigungen, um BabaPhone zu nutzen</string>
+    <string name="monitoring_active">Babyphone aktiv</string>
+    <string name="audio_monitoring">Audio-Überwachung läuft</string>
+    <string name="available_devices">Verfügbare Kind-Geräte:</string>
+    <string name="audio_level">Audiopegel:</string>
+    <string name="device_name">Gerätename</string>
+    <string name="no_devices_found">Keine Kind-Geräte gefunden. Stellen Sie sicher, dass das Kind-Gerät im selben Netzwerk ist.</string>
+    <string name="searching_devices">Suche nach Geräten…</string>
+    <string name="connected_to">Verbunden mit %1$s</string>
+    <string name="mode_icon_description">Modus-Symbol</string>
+    <string name="settings">Einstellungen</string>
+    <string name="settings_description">Empfindlichkeit und Lautstärke anpassen</string>
+    <string name="sensitivity_description">Passen Sie die Geräuschpegel-Schwelle an, die das Audio-Streaming auslöst</string>
+    <string name="volume_description">Passen Sie die Wiedergabelautstärke für empfangenes Audio an</string>
+</resources>
