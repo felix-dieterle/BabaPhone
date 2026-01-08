@@ -1,9 +1,9 @@
 package com.example.babaphone
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import com.example.babaphone.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
@@ -20,7 +20,7 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.settings)
         
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreferences = getSharedPreferences("BabaPhonePrefs", Context.MODE_PRIVATE)
         
         // Load saved settings
         val sensitivity = sharedPreferences.getInt(PREF_SENSITIVITY, 50)

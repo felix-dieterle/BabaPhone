@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.babaphone.adapter.DeviceAdapter
 import com.example.babaphone.databinding.ActivityMainBinding
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreferences = getSharedPreferences("BabaPhonePrefs", Context.MODE_PRIVATE)
         
         checkAndRequestPermissions()
         setupUI()
