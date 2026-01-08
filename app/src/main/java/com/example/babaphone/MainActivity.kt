@@ -40,6 +40,9 @@ class MainActivity : AppCompatActivity() {
             monitorService = binder.getService()
             isServiceBound = true
             
+            // Apply saved settings to the service
+            loadAndApplySettings()
+            
             // Set up audio level callback for child mode
             monitorService?.setAudioLevelCallback { level ->
                 runOnUiThread {
