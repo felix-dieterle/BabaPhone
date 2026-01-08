@@ -5,15 +5,19 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.babaphone.adapter.DeviceAdapter
 import com.example.babaphone.databinding.ActivityMainBinding
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var isMonitoring = false
     private lateinit var deviceAdapter: DeviceAdapter
     private var selectedDevice: DeviceInfo? = null
+    private lateinit var sharedPreferences: SharedPreferences
     
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -79,8 +84,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        
         checkAndRequestPermissions()
         setupUI()
+        loadAndApplySettings()
     }
     
     private fun setupUI() {
@@ -121,22 +129,37 @@ class MainActivity : AppCompatActivity() {
                 startMonitoring()
             }
         }
-        
-        binding.sensitivitySeekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
-                monitorService?.setSensitivity(progress / 100f)
+    }
+    
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+    
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
             }
-            override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {}
-        })
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Reload settings when returning from settings activity
+        loadAndApplySettings()
+    }
+    
+    private fun loadAndApplySettings() {
+        val sensitivity = sharedPreferences.getInt(SettingsActivity.PREF_SENSITIVITY, 50)
+        val volume = sharedPreferences.getInt(SettingsActivity.PREF_VOLUME, 80)
         
-        binding.volumeSeekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
-                monitorService?.setVolume(progress / 100f)
-            }
-            override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {}
-        })
+        // Apply settings to service if bound
+        monitorService?.setSensitivity(sensitivity / 100f)
+        monitorService?.setVolume(volume / 100f)
     }
     
     private fun checkAndRequestPermissions() {
