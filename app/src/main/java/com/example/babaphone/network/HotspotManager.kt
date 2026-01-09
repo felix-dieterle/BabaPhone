@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 
 /**
  * Manages WiFi hotspot creation and configuration
@@ -74,6 +75,7 @@ class HotspotManager(private val context: Context) {
     /**
      * Start local-only hotspot (API 26+)
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission")
     private fun startLocalOnlyHotspot(ssid: String): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
