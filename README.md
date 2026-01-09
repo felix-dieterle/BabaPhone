@@ -5,7 +5,8 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
 ## Features
 
 - **WLAN-Unterstützung** (Standard): Direkte Verbindung zwischen Geräten über WiFi ✅
-- **Mobiler Hotspot**: Verbindung über einen mobilen Hotspot ✅
+- **Automatischer Hotspot**: Automatische Hotspot-Erstellung im Kind-Modus wenn kein WLAN verfügbar ✅
+- **Verbindungserkennung**: Automatische Erkennung des besten Verbindungsmodus ✅
 - **Mobile Daten**: Unterstützung für Verbindung über mobile Daten (mit Backend) 🚧 *In Planung - Backend wird benötigt*
 - **Mehrere Kindgeräte**: Unterstützt mehrere Baby-Einheiten gleichzeitig ✅
 - **Standard Babyphone-Funktionalität**: Audio-Überwachung ohne Kamera ✅
@@ -58,10 +59,41 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
 
 **Aktuell verfügbar:**
 - **WLAN/WiFi**: Beide Geräte im gleichen Netzwerk (Standard) ✅
-- **Mobiler Hotspot**: Ein Gerät erstellt einen Hotspot, das andere verbindet sich ✅
+- **Mobiler Hotspot**: Automatische Erstellung eines Hotspots wenn kein WLAN verfügbar ist ✅
+  - **Automatisch im Kind-Modus**: Wenn das Kind-Gerät kein WLAN findet, erstellt es automatisch einen Hotspot
+  - **API 26+ erforderlich**: Hotspot-Modus funktioniert ab Android 8.0 (Oreo)
+  - **Einfache Verbindung**: SSID und Passwort werden in der App angezeigt
 
 **In Planung:**
 - **Mobile Daten Modus**: Für die Verbindung über mobile Daten ist ein Backend-Server erforderlich. Die App-Struktur ist bereits vorbereitet (OkHttp, Gson Bibliotheken sind eingebunden), aber das Backend muss noch implementiert werden. 🚧
+
+### Wie funktioniert der Hotspot-Modus?
+
+Der Hotspot-Modus wird **automatisch** aktiviert, wenn:
+1. Sie den **Kind-Modus** auswählen
+2. **Kein WLAN verfügbar** ist
+3. Sie "Start Monitoring" drücken
+
+**Prozess:**
+1. **Kind-Gerät** (beim Baby):
+   - Erkennt automatisch, dass kein WLAN vorhanden ist
+   - Erstellt einen mobilen Hotspot mit Namen "BabaPhone-[Gerätename]"
+   - Zeigt SSID und Passwort in der App an
+   - Wartet auf Verbindung des Eltern-Geräts
+
+2. **Eltern-Gerät**:
+   - Manuell mit dem angezeigten Hotspot verbinden (in den Geräte-Einstellungen)
+   - Zurück zur BabaPhone App wechseln
+   - "Eltern-Modus" wählen
+   - Kind-Gerät erscheint automatisch in der Liste
+   - "Start Monitoring" drücken
+
+**Hinweise:**
+- Der Hotspot wird automatisch beendet, wenn die Überwachung gestoppt wird
+- Hotspot-Modus kann den Akku schneller entleeren
+- Funktioniert nur auf Android 8.0 (API 26) oder höher
+
+Weitere Details finden Sie in der [Hotspot-Konzept-Dokumentation](HOTSPOT_CONCEPT.md).
 
 ## Berechtigungen
 
