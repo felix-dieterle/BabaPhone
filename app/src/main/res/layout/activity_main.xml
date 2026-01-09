@@ -79,6 +79,73 @@
         app:layout_constraintTop_toBottomOf="@id/modeRadioGroup"
         android:layout_marginTop="32dp" />
 
+    <!-- Connection status display -->
+    <TextView
+        android:id="@+id/connectionModeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connection_mode"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusText"
+        android:layout_marginTop="8dp" />
+
+    <!-- Hotspot information card (visible when hotspot is active) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/hotspotInfoCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/connectionModeText"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/hotspotTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hotspot_active"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/hotspotSsidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SSID: BabaPhone-Device"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/hotspotPasswordText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password: ********"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/hotspotInstructionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hotspot_instruction"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <!-- Device list for Parent Mode -->
     <TextView
         android:id="@+id/devicesLabel"
@@ -88,7 +155,7 @@
         android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusText"
+        app:layout_constraintTop_toBottomOf="@id/hotspotInfoCard"
         android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -110,7 +177,7 @@
         android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusText"
+        app:layout_constraintTop_toBottomOf="@id/hotspotInfoCard"
         android:layout_marginTop="16dp" />
 
     <ProgressBar
