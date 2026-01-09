@@ -40,16 +40,6 @@ class HotspotManager(private val context: Context) {
         fun onHotspotFailed(errorCode: Int)
     }
     
-    companion object {
-        const val ERROR_NOT_SUPPORTED = -1
-        const val ERROR_NO_CHANNEL = 1
-        const val ERROR_GENERIC = 2
-        const val ERROR_INCOMPATIBLE_MODE = 3
-        const val ERROR_TETHERING_DISALLOWED = 4
-        const val ERROR_SECURITY = 5
-        const val ERROR_UNKNOWN = 6
-    }
-    
     private var hotspotStateListener: HotspotStateListener? = null
     private var localOnlyHotspot: Any? = null // WifiManager.LocalOnlyHotspotReservation on API 26+
     private var currentHotspotConfig: HotspotConfig? = null
@@ -199,16 +189,5 @@ class HotspotManager(private val context: Context) {
     fun isHotspotSupported(): Boolean {
         // Local-only hotspot is supported from API 26+
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-    }
-    
-    /**
-     * Get a user-friendly message about hotspot support
-     */
-    fun getHotspotSupportMessage(): String {
-        return if (isHotspotSupported()) {
-            "Hotspot-Modus verfügbar"
-        } else {
-            "Hotspot-Modus erfordert Android 8.0 oder höher"
-        }
     }
 }
