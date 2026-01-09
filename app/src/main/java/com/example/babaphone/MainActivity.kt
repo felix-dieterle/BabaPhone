@@ -20,7 +20,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.babaphone.adapter.DeviceAdapter
 import com.example.babaphone.databinding.ActivityMainBinding
+import com.example.babaphone.network.ConnectionManager
 import com.example.babaphone.network.DeviceInfo
+import com.example.babaphone.network.HotspotManager
 import com.example.babaphone.service.AudioMonitorService
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var deviceAdapter: DeviceAdapter
     private var selectedDevice: DeviceInfo? = null
     private lateinit var sharedPreferences: SharedPreferences
+    
+    private lateinit var connectionManager: ConnectionManager
+    private lateinit var hotspotManager: HotspotManager
+    private var isHotspotActive = false
     
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -88,8 +94,13 @@ class MainActivity : AppCompatActivity() {
         
         sharedPreferences = getSharedPreferences("BabaPhonePrefs", Context.MODE_PRIVATE)
         
+        // Initialize managers
+        connectionManager = ConnectionManager(this)
+        hotspotManager = HotspotManager(this)
+        
         checkAndRequestPermissions()
         setupUI()
+        setupNetworkManagers()
         loadAndApplySettings()
     }
     
@@ -153,6 +164,79 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         // Reload settings when returning from settings activity
         loadAndApplySettings()
+        // Start monitoring connection state
+        connectionManager.startMonitoring()
+        updateConnectionStatus()
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        // Stop monitoring connection state when paused
+        connectionManager.stopMonitoring()
+    }
+    
+    private fun setupNetworkManagers() {
+        // Set up connection manager listener
+        connectionManager.setConnectionStateListener(object : ConnectionManager.ConnectionStateListener {
+            override fun onConnectionModeChanged(mode: ConnectionManager.ConnectionMode) {
+                runOnUiThread {
+                    updateConnectionStatus()
+                }
+            }
+        })
+        
+        // Set up hotspot manager listener
+        hotspotManager.setHotspotStateListener(object : HotspotManager.HotspotStateListener {
+            override fun onHotspotEnabled(config: HotspotManager.HotspotConfig) {
+                runOnUiThread {
+                    isHotspotActive = true
+                    showHotspotInfo(config)
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.hotspot_active),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            
+            override fun onHotspotDisabled() {
+                runOnUiThread {
+                    isHotspotActive = false
+                    hideHotspotInfo()
+                }
+            }
+            
+            override fun onHotspotFailed(error: String) {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.hotspot_failed, error),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        })
+    }
+    
+    private fun updateConnectionStatus() {
+        val mode = connectionManager.getCurrentConnectionMode()
+        val modeText = when (mode) {
+            ConnectionManager.ConnectionMode.WIFI -> getString(R.string.wifi_mode)
+            ConnectionManager.ConnectionMode.HOTSPOT -> getString(R.string.hotspot_mode)
+            ConnectionManager.ConnectionMode.MOBILE_DATA -> getString(R.string.mobile_data_mode)
+            ConnectionManager.ConnectionMode.NONE -> getString(R.string.no_connection)
+        }
+        binding.connectionModeText.text = getString(R.string.connection_mode) + " " + modeText
+    }
+    
+    private fun showHotspotInfo(config: HotspotManager.HotspotConfig) {
+        binding.hotspotInfoCard.visibility = View.VISIBLE
+        binding.hotspotSsidText.text = "SSID: ${config.ssid}"
+        binding.hotspotPasswordText.text = "Password: ${config.password}"
+    }
+    
+    private fun hideHotspotInfo() {
+        binding.hotspotInfoCard.visibility = View.GONE
     }
     
     private fun loadAndApplySettings() {
@@ -195,6 +279,22 @@ class MainActivity : AppCompatActivity() {
         
         val isParentMode = binding.parentModeRadio.isChecked
         
+        // Check connection and handle hotspot mode
+        val currentConnectionMode = connectionManager.getCurrentConnectionMode()
+        
+        if (currentConnectionMode == ConnectionManager.ConnectionMode.NONE && !isParentMode) {
+            // Child mode with no WiFi - try to create hotspot
+            if (hotspotManager.isHotspotSupported()) {
+                Toast.makeText(this, getString(R.string.creating_hotspot), Toast.LENGTH_SHORT).show()
+                val deviceName = Build.MODEL.replace(" ", "-")
+                hotspotManager.startHotspot(deviceName)
+                // Continue with monitoring even if hotspot creation is pending
+            } else {
+                Toast.makeText(this, getString(R.string.hotspot_not_supported), Toast.LENGTH_LONG).show()
+                return
+            }
+        }
+        
         // For parent mode, check if a device is selected
         if (isParentMode && selectedDevice == null && deviceAdapter.itemCount == 0) {
             Toast.makeText(this, getString(R.string.searching_devices), Toast.LENGTH_SHORT).show()
@@ -232,6 +332,12 @@ class MainActivity : AppCompatActivity() {
         isMonitoring = false
         selectedDevice = null
         deviceAdapter.clear()
+        
+        // Stop hotspot if it was created
+        if (isHotspotActive) {
+            hotspotManager.stopHotspot()
+        }
+        
         updateUI()
     }
     
@@ -263,5 +369,10 @@ class MainActivity : AppCompatActivity() {
         if (isServiceBound) {
             unbindService(serviceConnection)
         }
+        // Stop hotspot if active
+        if (isHotspotActive) {
+            hotspotManager.stopHotspot()
+        }
+        connectionManager.stopMonitoring()
     }
 }

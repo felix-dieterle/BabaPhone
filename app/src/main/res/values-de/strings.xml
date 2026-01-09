@@ -31,4 +31,14 @@
     <string name="settings_description">Empfindlichkeit und Lautstärke anpassen</string>
     <string name="sensitivity_description">Passen Sie die Geräuschpegel-Schwelle an, die das Audio-Streaming auslöst</string>
     <string name="volume_description">Passen Sie die Wiedergabelautstärke für empfangenes Audio an</string>
+    <string name="connection_mode">Verbindungsmodus:</string>
+    <string name="hotspot_active">Hotspot Aktiv</string>
+    <string name="hotspot_instruction">Verbinden Sie das Eltern-Gerät mit diesem Hotspot</string>
+    <string name="wifi_mode">WLAN-Modus</string>
+    <string name="hotspot_mode">Hotspot-Modus</string>
+    <string name="mobile_data_mode">Mobile Daten-Modus (Zukünftig)</string>
+    <string name="no_connection">Keine Verbindung</string>
+    <string name="creating_hotspot">Erstelle Hotspot…</string>
+    <string name="hotspot_failed">Hotspot-Erstellung fehlgeschlagen: %1$s</string>
+    <string name="hotspot_not_supported">Hotspot-Modus erfordert Android 8.0 oder höher</string>
 </resources>

@@ -31,4 +31,14 @@
     <string name="settings_description">Adjust sensitivity and volume settings</string>
     <string name="sensitivity_description">Adjust the noise level threshold that triggers audio streaming</string>
     <string name="volume_description">Adjust the playback volume for received audio</string>
+    <string name="connection_mode">Connection Mode:</string>
+    <string name="hotspot_active">Hotspot Active</string>
+    <string name="hotspot_instruction">Connect the parent device to this hotspot</string>
+    <string name="wifi_mode">WiFi Mode</string>
+    <string name="hotspot_mode">Hotspot Mode</string>
+    <string name="mobile_data_mode">Mobile Data Mode (Future)</string>
+    <string name="no_connection">No Connection</string>
+    <string name="creating_hotspot">Creating hotspot…</string>
+    <string name="hotspot_failed">Hotspot creation failed: %1$s</string>
+    <string name="hotspot_not_supported">Hotspot mode requires Android 8.0 or higher</string>
 </resources>
