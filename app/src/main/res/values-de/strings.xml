@@ -41,4 +41,10 @@
     <string name="creating_hotspot">Erstelle Hotspot…</string>
     <string name="hotspot_failed">Hotspot-Erstellung fehlgeschlagen: %1$s</string>
     <string name="hotspot_not_supported">Hotspot-Modus erfordert Android 8.0 oder höher</string>
+    <string name="hotspot_error_no_channel">Kein verfügbarer Kanal</string>
+    <string name="hotspot_error_generic">Allgemeiner Fehler</string>
+    <string name="hotspot_error_incompatible">Inkompatibler Modus</string>
+    <string name="hotspot_error_tethering">Tethering nicht erlaubt</string>
+    <string name="hotspot_error_security">Berechtigung fehlt</string>
+    <string name="hotspot_error_unknown">Unbekannter Fehler</string>
 </resources>

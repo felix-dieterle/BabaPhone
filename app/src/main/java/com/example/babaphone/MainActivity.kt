@@ -206,11 +206,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             
-            override fun onHotspotFailed(error: String) {
+            override fun onHotspotFailed(errorCode: Int) {
                 runOnUiThread {
+                    val errorMsg = when (errorCode) {
+                        HotspotManager.ERROR_NOT_SUPPORTED -> getString(R.string.hotspot_not_supported)
+                        HotspotManager.ERROR_NO_CHANNEL -> getString(R.string.hotspot_error_no_channel)
+                        HotspotManager.ERROR_GENERIC -> getString(R.string.hotspot_error_generic)
+                        HotspotManager.ERROR_INCOMPATIBLE_MODE -> getString(R.string.hotspot_error_incompatible)
+                        HotspotManager.ERROR_TETHERING_DISALLOWED -> getString(R.string.hotspot_error_tethering)
+                        HotspotManager.ERROR_SECURITY -> getString(R.string.hotspot_error_security)
+                        else -> getString(R.string.hotspot_error_unknown)
+                    }
                     Toast.makeText(
                         this@MainActivity,
-                        getString(R.string.hotspot_failed, error),
+                        getString(R.string.hotspot_failed, errorMsg),
                         Toast.LENGTH_LONG
                     ).show()
                 }

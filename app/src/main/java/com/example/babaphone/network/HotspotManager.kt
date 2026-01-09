@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.util.Log
-import java.lang.reflect.Method
 
 /**
  * Manages WiFi hotspot creation and configuration
@@ -20,6 +19,13 @@ class HotspotManager(private val context: Context) {
     companion object {
         private const val TAG = "HotspotManager"
         private const val HOTSPOT_SSID_PREFIX = "BabaPhone-"
+        const val ERROR_NOT_SUPPORTED = -1
+        const val ERROR_NO_CHANNEL = 1
+        const val ERROR_GENERIC = 2
+        const val ERROR_INCOMPATIBLE_MODE = 3
+        const val ERROR_TETHERING_DISALLOWED = 4
+        const val ERROR_SECURITY = 5
+        const val ERROR_UNKNOWN = 6
     }
     
     data class HotspotConfig(
@@ -31,7 +37,17 @@ class HotspotManager(private val context: Context) {
     interface HotspotStateListener {
         fun onHotspotEnabled(config: HotspotConfig)
         fun onHotspotDisabled()
-        fun onHotspotFailed(error: String)
+        fun onHotspotFailed(errorCode: Int)
+    }
+    
+    companion object {
+        const val ERROR_NOT_SUPPORTED = -1
+        const val ERROR_NO_CHANNEL = 1
+        const val ERROR_GENERIC = 2
+        const val ERROR_INCOMPATIBLE_MODE = 3
+        const val ERROR_TETHERING_DISALLOWED = 4
+        const val ERROR_SECURITY = 5
+        const val ERROR_UNKNOWN = 6
     }
     
     private var hotspotStateListener: HotspotStateListener? = null
@@ -60,9 +76,7 @@ class HotspotManager(private val context: Context) {
             // For older versions, we'll just log that it's not supported
             // Reflection-based approaches are unreliable and deprecated
             Log.w(TAG, "Hotspot creation not supported on API < 26")
-            hotspotStateListener?.onHotspotFailed(
-                "Hotspot-Modus wird erst ab Android 8.0 (API 26) unterstützt"
-            )
+            hotspotStateListener?.onHotspotFailed(ERROR_NOT_SUPPORTED)
             false
         }
     }
@@ -122,16 +136,16 @@ class HotspotManager(private val context: Context) {
                     
                     override fun onFailed(reason: Int) {
                         Log.e(TAG, "Local-only hotspot failed: $reason")
-                        val errorMsg = when (reason) {
-                            ERROR_NO_CHANNEL -> "Kein verfügbarer Kanal"
-                            ERROR_GENERIC -> "Allgemeiner Fehler"
-                            ERROR_INCOMPATIBLE_MODE -> "Inkompatibler Modus"
-                            ERROR_TETHERING_DISALLOWED -> "Tethering nicht erlaubt"
-                            else -> "Unbekannter Fehler ($reason)"
+                        val errorCode = when (reason) {
+                            ERROR_NO_CHANNEL -> ERROR_NO_CHANNEL
+                            ERROR_GENERIC -> ERROR_GENERIC
+                            ERROR_INCOMPATIBLE_MODE -> ERROR_INCOMPATIBLE_MODE
+                            ERROR_TETHERING_DISALLOWED -> ERROR_TETHERING_DISALLOWED
+                            else -> ERROR_UNKNOWN
                         }
                         currentHotspotConfig = null
                         localOnlyHotspot = null
-                        hotspotStateListener?.onHotspotFailed(errorMsg)
+                        hotspotStateListener?.onHotspotFailed(errorCode)
                     }
                 },
                 null // Handler, null = main thread
@@ -139,11 +153,11 @@ class HotspotManager(private val context: Context) {
             return true
         } catch (e: SecurityException) {
             Log.e(TAG, "Security exception starting hotspot", e)
-            hotspotStateListener?.onHotspotFailed("Berechtigung fehlt: ${e.message}")
+            hotspotStateListener?.onHotspotFailed(ERROR_SECURITY)
             return false
         } catch (e: Exception) {
             Log.e(TAG, "Error starting hotspot", e)
-            hotspotStateListener?.onHotspotFailed("Fehler beim Starten: ${e.message}")
+            hotspotStateListener?.onHotspotFailed(ERROR_UNKNOWN)
             return false
         }
     }

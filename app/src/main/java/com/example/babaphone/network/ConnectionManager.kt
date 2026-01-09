@@ -209,16 +209,4 @@ class ConnectionManager(private val context: Context) {
         }
         networkCallback = null
     }
-    
-    /**
-     * Get a user-friendly description of the current connection state
-     */
-    fun getConnectionDescription(): String {
-        return when (getCurrentConnectionMode()) {
-            ConnectionMode.WIFI -> "Verbunden mit WLAN"
-            ConnectionMode.HOTSPOT -> "Verbunden mit Hotspot"
-            ConnectionMode.MOBILE_DATA -> "Verbunden über mobile Daten"
-            ConnectionMode.NONE -> "Keine Verbindung"
-        }
-    }
 }
