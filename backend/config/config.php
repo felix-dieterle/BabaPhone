@@ -34,11 +34,13 @@ ini_set('display_errors', '1');
 // Timezone
 date_default_timezone_set('Europe/Berlin');
 
-// Enable CORS
-header('Access-Control-Allow-Origin: ' . ALLOWED_ORIGINS);
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header('Content-Type: application/json; charset=utf-8');
+// Enable CORS for API endpoints
+if (strpos($_SERVER['REQUEST_URI'], '/api/') !== false) {
+    header('Access-Control-Allow-Origin: ' . ALLOWED_ORIGINS);
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Content-Type: application/json; charset=utf-8');
+}
 
 // Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

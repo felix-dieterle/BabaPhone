@@ -15,6 +15,6 @@ class BabaPhoneInstrumentedTest {
     @Test
     fun useAppContext() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.babaphone", appContext.packageName)
+        assertEquals("de.felixdieterle.babaphone", appContext.packageName)
     }
 }

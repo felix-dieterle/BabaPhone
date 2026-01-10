@@ -187,10 +187,10 @@ class MobileDataManager(
                                 val device = deviceElement.asJsonObject
                                 devices.add(
                                     DeviceInfo(
-                                        deviceId = device.get("device_id").asString,
-                                        deviceName = device.get("device_name").asString,
-                                        ipAddress = device.get("ip_address").asString,
-                                        port = 8888 // Default port
+                                        name = device.get("device_name").asString,
+                                        address = device.get("ip_address").asString,
+                                        port = 8888, // Default port
+                                        deviceId = device.get("device_id").asString
                                     )
                                 )
                             }
