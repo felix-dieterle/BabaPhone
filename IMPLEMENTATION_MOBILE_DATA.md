@@ -31,22 +31,25 @@ Die ursprüngliche Anforderung war:
 #### Backend-Struktur
 ```
 backend/
-├── api/
-│   ├── register.php      # Geräte-Registrierung
-│   ├── discover.php      # Geräte-Suche
-│   ├── signal.php        # Signaling-Protokoll
-│   └── relay.php         # Audio-Relay (Fallback)
-├── config/
-│   ├── config.php        # Konfiguration
-│   └── database.php      # Datenspeicherung
-├── index.php             # API-Dokumentation
-├── cleanup.php           # Automatische Bereinigung
-├── .htaccess            # Apache-Konfiguration
-├── .gitignore           # Git-Konfiguration
-├── README.md            # Vollständige Dokumentation
-├── QUICKSTART.md        # Schnellstart-Anleitung
-└── test-backend.sh      # Test-Script
+└── babyphone/              # Ermöglicht mehrere Apps auf einem Server
+    ├── api/
+    │   ├── register.php    # Geräte-Registrierung
+    │   ├── discover.php    # Geräte-Suche
+    │   ├── signal.php      # Signaling-Protokoll
+    │   └── relay.php       # Audio-Relay (Fallback)
+    ├── config/
+    │   ├── config.php      # Konfiguration
+    │   └── database.php    # Datenspeicherung
+    ├── index.php           # API-Dokumentation
+    ├── cleanup.php         # Automatische Bereinigung
+    ├── .htaccess          # Apache-Konfiguration
+    └── .gitignore         # Git-Konfiguration
+├── README.md              # Vollständige Dokumentation
+├── QUICKSTART.md          # Schnellstart-Anleitung
+└── test-backend.sh        # Test-Script
 ```
+
+**Hinweis:** Die `babyphone/` Unterordner-Struktur ermöglicht es, mehrere Apps auf demselben Server zu hosten (z.B. `/var/www/html/babyphone/`, `/var/www/html/andere-app/`).
 
 #### API-Endpunkte
 
@@ -116,15 +119,17 @@ String Resources:
 
 1. **Backend bereitstellen:**
    ```bash
-   cd backend
+   cd backend/babyphone
    php -S localhost:8080
-   # oder auf einem richtigen Server deployen
+   # oder auf einem richtigen Server deployen nach /var/www/html/babyphone/
    ```
 
 2. **In der App konfigurieren:**
    - Einstellungen öffnen (⚙)
    - "Mobile Daten-Modus aktivieren" aktivieren
-   - Backend-URL eingeben (z.B. `http://192.168.1.100:8080`)
+   - Backend-URL eingeben:
+     - Lokal: `http://192.168.1.100:8080`
+     - Produktiv: `https://ihr-server.de/babyphone`
    - Speichern
 
 3. **Verbindung herstellen:**

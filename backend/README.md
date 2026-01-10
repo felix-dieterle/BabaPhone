@@ -21,7 +21,7 @@ Backend server für die BabaPhone Android App zur Unterstützung von Verbindunge
 ### 1. Lokale Entwicklung
 
 ```bash
-cd backend
+cd backend/babyphone
 php -S localhost:8080
 ```
 
@@ -31,15 +31,17 @@ php -S localhost:8080
 
 #### Apache
 
-1. Kopieren Sie das `backend/` Verzeichnis auf Ihren Webserver:
+1. Kopieren Sie das `backend/babyphone/` Verzeichnis auf Ihren Webserver:
 ```bash
-scp -r backend/ user@server:/var/www/html/babaphone-backend/
+scp -r backend/babyphone/ user@server:/var/www/html/babyphone/
 ```
+
+**Hinweis:** Die Struktur `backend/babyphone/` ermöglicht es, mehrere Apps auf demselben Server zu hosten (z.B. `/var/www/html/babyphone/`, `/var/www/html/other-app/`).
 
 2. Stellen Sie sicher, dass das `data/` Verzeichnis schreibbar ist:
 ```bash
 ssh user@server
-cd /var/www/html/babaphone-backend
+cd /var/www/html/babyphone
 mkdir -p data
 chmod 750 data
 chown www-data:www-data data
@@ -47,7 +49,7 @@ chown www-data:www-data data
 
 3. Konfigurieren Sie Apache (optional - `.htaccess` Datei):
 ```apache
-# backend/.htaccess
+# babyphone/.htaccess
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -70,7 +72,7 @@ server {
     listen 80;
     server_name babaphone.example.com;
     
-    root /var/www/html/babaphone-backend;
+    root /var/www/html/babyphone;
     index index.php;
     
     location / {

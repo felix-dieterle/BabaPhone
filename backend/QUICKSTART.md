@@ -5,7 +5,7 @@
 ### 1. PHP-Server starten
 
 ```bash
-cd backend
+cd backend/babyphone
 php -S localhost:8080
 ```
 
@@ -51,11 +51,16 @@ curl http://localhost:8080/api/discover.php?device_type=child
 4. Geben Sie die Backend-URL ein: `http://YOUR-IP:8080`
    - Für lokale Tests: Verwenden Sie die IP-Adresse Ihres Computers im lokalen Netzwerk
    - Beispiel: `http://192.168.1.100:8080`
+   - **Produktiv:** `http://your-server.com/babyphone` (wenn unter `/var/www/html/babyphone` deployed)
 5. Speichern Sie die Einstellungen
 
 **Wichtig:** Für lokale Tests müssen sich alle Geräte im gleichen Netzwerk befinden.
 
 ## Produktions-Deployment
+
+Die Backend-Struktur `backend/babyphone/` ermöglicht es, mehrere Apps auf demselben Server zu platzieren:
+- `/var/www/html/babyphone/` - BabaPhone Backend
+- `/var/www/html/other-app/` - Andere Anwendung
 
 Siehe [Backend README](README.md) für detaillierte Deployment-Anweisungen auf Apache/Nginx mit HTTPS.
 
@@ -81,8 +86,8 @@ Siehe [Backend README](README.md) für detaillierte Deployment-Anweisungen auf A
 
 ### "data/ directory not writable"
 ```bash
-chmod 750 backend/data
-chown www-data:www-data backend/data  # Auf Linux/Apache
+chmod 750 babyphone/data
+chown www-data:www-data babyphone/data  # Auf Linux/Apache
 ```
 
 ### CORS-Fehler

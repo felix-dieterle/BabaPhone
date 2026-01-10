@@ -66,9 +66,10 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
   - **API 26+ erforderlich**: Hotspot-Modus funktioniert ab Android 8.0 (Oreo)
   - **Einfache Verbindung**: SSID und Passwort werden in der App angezeigt
 - **Mobile Daten Modus**: Verbindung über mobile Daten mit Backend-Server ✅ **Neu!**
-  - **Backend erforderlich**: Benötigt einen PHP-Backend-Server (siehe `backend/` Verzeichnis)
+  - **Backend erforderlich**: Benötigt einen PHP-Backend-Server (siehe `backend/babyphone/` Verzeichnis)
   - **Signaling und Relay**: Der Server vermittelt Verbindungen und kann als Audio-Relay dienen
   - **Einstellungen**: Aktivieren Sie den Modus in den App-Einstellungen und konfigurieren Sie die Backend-URL
+  - **Mehrere Apps möglich**: Die Backend-Struktur ermöglicht das Hosting mehrerer Apps auf einem Server
 
 ### Mobile Daten Modus einrichten
 
@@ -76,11 +77,14 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
    - Siehe [Backend README](backend/README.md) für Installations- und Deployment-Anweisungen
    - Hosting auf einem Server mit PHP-Unterstützung erforderlich
    - HTTPS wird für Produktionsumgebungen dringend empfohlen
+   - Deploy nach `/var/www/html/babyphone/` für Produktion
 
 2. **App konfigurieren**:
    - Öffnen Sie die Einstellungen in der App (⚙ Symbol)
    - Aktivieren Sie "Mobile Daten-Modus aktivieren"
-   - Geben Sie die Backend-Server-URL ein (z.B. `https://ihr-server.de`)
+   - Geben Sie die Backend-Server-URL ein:
+     - Lokal: `http://192.168.1.100:8080` (IP Ihres Computers)
+     - Produktiv: `https://ihr-server.de/babyphone`
    - Speichern Sie die Einstellungen
 
 3. **Verbindung herstellen**:
