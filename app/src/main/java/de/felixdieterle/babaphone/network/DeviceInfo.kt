@@ -1,4 +1,4 @@
-package com.example.babaphone.network
+package de.felixdieterle.babaphone.network
 
 data class DeviceInfo(
     val name: String,

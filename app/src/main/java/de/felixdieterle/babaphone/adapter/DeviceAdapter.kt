@@ -1,12 +1,12 @@
-package com.example.babaphone.adapter
+package de.felixdieterle.babaphone.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.babaphone.R
-import com.example.babaphone.network.DeviceInfo
+import de.felixdieterle.babaphone.R
+import de.felixdieterle.babaphone.network.DeviceInfo
 
 class DeviceAdapter(
     private val devices: MutableList<DeviceInfo>,

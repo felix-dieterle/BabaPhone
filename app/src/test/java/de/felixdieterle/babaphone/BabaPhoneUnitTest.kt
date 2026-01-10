@@ -1,4 +1,4 @@
-package com.example.babaphone
+package de.felixdieterle.babaphone
 
 import org.junit.Test
 import org.junit.Assert.*

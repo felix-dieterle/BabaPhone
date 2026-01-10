@@ -1,10 +1,10 @@
-package com.example.babaphone
+package de.felixdieterle.babaphone
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.babaphone.databinding.ActivitySettingsBinding
+import de.felixdieterle.babaphone.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
     

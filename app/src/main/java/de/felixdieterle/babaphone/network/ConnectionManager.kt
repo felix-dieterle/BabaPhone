@@ -1,4 +1,4 @@
-package com.example.babaphone.network
+package de.felixdieterle.babaphone.network
 
 import android.content.Context
 import android.net.ConnectivityManager

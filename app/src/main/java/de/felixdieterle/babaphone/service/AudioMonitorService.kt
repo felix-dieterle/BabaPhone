@@ -1,4 +1,4 @@
-package com.example.babaphone.service
+package de.felixdieterle.babaphone.service
 
 import android.Manifest
 import android.app.Notification
@@ -18,11 +18,11 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.example.babaphone.MainActivity
-import com.example.babaphone.R
-import com.example.babaphone.network.AudioStreamManager
-import com.example.babaphone.network.DeviceInfo
-import com.example.babaphone.network.NetworkDiscoveryManager
+import de.felixdieterle.babaphone.MainActivity
+import de.felixdieterle.babaphone.R
+import de.felixdieterle.babaphone.network.AudioStreamManager
+import de.felixdieterle.babaphone.network.DeviceInfo
+import de.felixdieterle.babaphone.network.NetworkDiscoveryManager
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.concurrent.atomic.AtomicBoolean

@@ -1,4 +1,4 @@
-package com.example.babaphone
+package de.felixdieterle.babaphone
 
 import android.Manifest
 import android.content.ComponentName
@@ -18,12 +18,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.babaphone.adapter.DeviceAdapter
-import com.example.babaphone.databinding.ActivityMainBinding
-import com.example.babaphone.network.ConnectionManager
-import com.example.babaphone.network.DeviceInfo
-import com.example.babaphone.network.HotspotManager
-import com.example.babaphone.service.AudioMonitorService
+import de.felixdieterle.babaphone.adapter.DeviceAdapter
+import de.felixdieterle.babaphone.databinding.ActivityMainBinding
+import de.felixdieterle.babaphone.network.ConnectionManager
+import de.felixdieterle.babaphone.network.DeviceInfo
+import de.felixdieterle.babaphone.network.HotspotManager
+import de.felixdieterle.babaphone.service.AudioMonitorService
 
 class MainActivity : AppCompatActivity() {
     
