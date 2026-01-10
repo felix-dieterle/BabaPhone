@@ -1,0 +1,54 @@
+# BabaPhone Backend .htaccess
+# Apache configuration for API routing and security
+
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Optional: Remove .php extension from API calls
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^api/(.*)$ api/$1.php [L]
+</IfModule>
+
+# Protect the data directory
+<IfModule mod_authz_core.c>
+    <Directory "data">
+        Require all denied
+    </Directory>
+    <Files ~ "^\.">
+        Require all denied
+    </Files>
+</IfModule>
+
+# Older Apache versions
+<IfModule !mod_authz_core.c>
+    <Directory "data">
+        Order Allow,Deny
+        Deny from all
+    </Directory>
+    <Files ~ "^\.">
+        Order Allow,Deny
+        Deny from all
+    </Files>
+</IfModule>
+
+# Enable CORS (if needed)
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Disable server signature
+ServerSignature Off

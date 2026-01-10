@@ -53,29 +53,36 @@ Dieses Dokument beschreibt das Konzept für drei Verbindungsmodi in der BabaPhon
 - Oder `WifiManager.startLocalOnlyHotspot()` für neuere Versionen
 - Fallback auf ältere APIs für API < 26
 
-## 3. Mobile Daten-Modus (Zukünftig)
+## 3. Mobile Daten-Modus (Implementiert) ✅
 
 ### Funktionsweise
-1. **Signaling-Server**: Backend-Server vermittelt Verbindungen
-2. **Geräte-Registrierung**: Beide Geräte registrieren sich beim Server
-3. **NAT-Traversal**: Server hilft bei der Verbindungsherstellung
-4. **WebRTC oder ähnlich**: Peer-to-Peer-Verbindung über das Internet
-5. **Fallback**: Server kann als Relay dienen, wenn P2P nicht möglich
+1. **Signaling-Server**: Backend-Server vermittelt Verbindungen (PHP-basiert)
+2. **Geräte-Registrierung**: Beide Geräte registrieren sich beim Server über HTTPS
+3. **Geräteerkennung**: Server stellt Listen verfügbarer Geräte bereit
+4. **Signaling-Protokoll**: Server vermittelt Verbindungsinformationen zwischen Geräten
+5. **Audio-Relay**: Server kann als Relay dienen, wenn P2P nicht möglich
 
 ### Wann wird es verwendet?
 - Geräte sind an verschiedenen Standorten
 - Keine gemeinsame WLAN-Verfügbarkeit
-- Beide Geräte haben mobile Datenverbindung
+- Beide Geräte haben Internetverbindung (WiFi oder mobile Daten)
+- Mobile Daten-Modus in den Einstellungen aktiviert
 
-### Voraussetzungen
-- Backend-Server (PHP/Node.js)
-- WebSocket oder ähnliche Technologie
-- Möglicherweise STUN/TURN-Server für NAT-Traversal
+### Implementierte Features
+- ✅ PHP Backend-Server mit REST API
+- ✅ Geräte-Registrierung und Heartbeat
+- ✅ Device Discovery durch Backend
+- ✅ Signaling für Verbindungsaufbau
+- ✅ Audio-Relay als Fallback
+- ✅ MobileDataManager in Android App
+- ✅ Einstellungen-UI für Backend-URL
+- ✅ Automatische Bereinigung alter Daten
 
 ### UI/UX
-- Optionaler Modus (kann deaktiviert werden)
-- Hinweis auf Datenverbrauch
-- Server-Verbindungsstatus
+- ✅ Aktivierung in Einstellungen
+- ✅ Backend-URL-Konfiguration
+- ✅ Hinweis auf Datenverbrauch (in Settings-Beschreibung)
+- Server-Verbindungsstatus (kann noch erweitert werden)
 
 ## Automatische Modus-Auswahl
 
@@ -128,19 +135,28 @@ START Monitoring
 
 ## Implementierungsphasen
 
-### Phase 1: Hotspot-Modus (Aktuell) ✅
+### Phase 1: Hotspot-Modus (Abgeschlossen) ✅
 - [x] ConnectionManager für Netzwerkzustandserkennung
 - [x] HotspotManager für Hotspot-Steuerung
 - [x] Automatische Hotspot-Erstellung im Kind-Modus
 - [x] UI für Hotspot-Status und -Informationen
 - [x] Integration mit bestehendem NSD
 
-### Phase 2: Mobile Daten-Modus (Zukünftig)
-- [ ] Backend-Server-Implementierung
-- [ ] WebSocket-Signaling
-- [ ] NAT-Traversal-Implementierung
-- [ ] Client-seitige Integration
-- [ ] UI für Server-Verbindung
+### Phase 2: Mobile Daten-Modus (Abgeschlossen) ✅
+- [x] Backend-Server-Implementierung (PHP)
+- [x] REST API für Registrierung und Discovery
+- [x] Signaling-Protokoll über HTTP
+- [x] Audio-Relay-Fallback
+- [x] MobileDataManager in Android App
+- [x] UI für Backend-Konfiguration
+- [x] Settings-Integration
+
+### Phase 3: Optimierungen (Optional/Zukünftig)
+- [ ] WebSocket für Echtzeit-Signaling (statt HTTP-Polling)
+- [ ] STUN/TURN-Server für besseres NAT-Traversal
+- [ ] Ende-zu-Ende-Verschlüsselung für Audio
+- [ ] Optimierung des Audio-Relay für niedrigere Latenz
+- [ ] Erweiterte Verbindungsstatistiken in UI
 
 ## Benutzererfahrung
 
