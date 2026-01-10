@@ -138,4 +138,66 @@
         app:layout_constraintTop_toBottomOf="@id/volumeDescription"
         android:layout_marginTop="16dp" />
 
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/volumeSeekBar"
+        android:layout_marginTop="32dp" />
+
+    <TextView
+        android:id="@+id/mobileDataLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mobile_data_mode"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider3"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/mobileDataDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mobile_data_description"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mobileDataLabel"
+        android:layout_marginTop="4dp" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/mobileDataSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mobileDataLabel" />
+
+    <TextView
+        android:id="@+id/backendUrlLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/backend_url"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mobileDataDescription"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/backendUrlInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/backend_url_hint"
+        android:inputType="textUri"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backendUrlLabel"
+        android:layout_marginTop="8dp"
+        android:autofillHints="url" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

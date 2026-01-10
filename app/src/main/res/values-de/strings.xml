@@ -47,4 +47,8 @@
     <string name="hotspot_error_tethering">Tethering nicht erlaubt</string>
     <string name="hotspot_error_security">Berechtigung fehlt</string>
     <string name="hotspot_error_unknown">Unbekannter Fehler</string>
+    <string name="mobile_data_enabled">Mobile Daten-Modus aktivieren</string>
+    <string name="mobile_data_description">Verbindung über mobile Daten mit Backend-Server (erfordert Internetverbindung)</string>
+    <string name="backend_url">Backend-Server-URL</string>
+    <string name="backend_url_hint">https://ihr-server.de</string>
 </resources>

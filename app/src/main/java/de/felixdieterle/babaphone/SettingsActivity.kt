@@ -25,11 +25,15 @@ class SettingsActivity : AppCompatActivity() {
         // Load saved settings
         val sensitivity = sharedPreferences.getInt(PREF_SENSITIVITY, 50)
         val volume = sharedPreferences.getInt(PREF_VOLUME, 80)
+        val mobileDataEnabled = sharedPreferences.getBoolean(PREF_MOBILE_DATA_ENABLED, false)
+        val backendUrl = sharedPreferences.getString(PREF_BACKEND_URL, DEFAULT_BACKEND_URL) ?: DEFAULT_BACKEND_URL
         
         binding.sensitivitySeekBar.progress = sensitivity
         binding.volumeSeekBar.progress = volume
         binding.sensitivityValue.text = "$sensitivity%"
         binding.volumeValue.text = "$volume%"
+        binding.mobileDataSwitch.isChecked = mobileDataEnabled
+        binding.backendUrlInput.setText(backendUrl)
         
         // Set up listeners
         binding.sensitivitySeekBar.setOnSeekBarChangeListener(
@@ -39,6 +43,19 @@ class SettingsActivity : AppCompatActivity() {
         binding.volumeSeekBar.setOnSeekBarChangeListener(
             createSeekBarListener(binding.volumeValue, PREF_VOLUME)
         )
+        
+        // Mobile data switch
+        binding.mobileDataSwitch.setOnCheckedChangeListener { _, isChecked ->
+            sharedPreferences.edit().putBoolean(PREF_MOBILE_DATA_ENABLED, isChecked).apply()
+        }
+        
+        // Backend URL input
+        binding.backendUrlInput.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val url = binding.backendUrlInput.text.toString()
+                sharedPreferences.edit().putString(PREF_BACKEND_URL, url).apply()
+            }
+        }
     }
     
     private fun createSeekBarListener(
@@ -64,5 +81,8 @@ class SettingsActivity : AppCompatActivity() {
     companion object {
         const val PREF_SENSITIVITY = "sensitivity"
         const val PREF_VOLUME = "volume"
+        const val PREF_MOBILE_DATA_ENABLED = "mobile_data_enabled"
+        const val PREF_BACKEND_URL = "backend_url"
+        const val DEFAULT_BACKEND_URL = "https://babaphone-backend.example.com"
     }
 }
