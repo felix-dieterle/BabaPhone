@@ -1,0 +1,23 @@
+# Ignore data directory (contains user data and temporary files)
+data/
+
+# Ignore PHP logs
+*.log
+
+# Ignore environment-specific config
+config/local.php
+
+# Ignore composer dependencies (if added later)
+vendor/
+composer.lock
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

@@ -2,12 +2,14 @@
 
 Eine einfache Android Babyphone-App mit folgenden Funktionen:
 
+**Package Name:** `de.felixdieterle.babaphone`
+
 ## Features
 
 - **WLAN-Unterstützung** (Standard): Direkte Verbindung zwischen Geräten über WiFi ✅
 - **Automatischer Hotspot**: Automatische Hotspot-Erstellung im Kind-Modus wenn kein WLAN verfügbar ✅
 - **Verbindungserkennung**: Automatische Erkennung des besten Verbindungsmodus ✅
-- **Mobile Daten**: Unterstützung für Verbindung über mobile Daten (mit Backend) 🚧 *In Planung - Backend wird benötigt*
+- **Mobile Daten**: Unterstützung für Verbindung über mobile Daten (mit Backend) ✅ *Neu implementiert*
 - **Mehrere Kindgeräte**: Unterstützt mehrere Baby-Einheiten gleichzeitig ✅
 - **Standard Babyphone-Funktionalität**: Audio-Überwachung ohne Kamera ✅
 - **Eltern- und Kind-Modus**: Wählen Sie, ob das Gerät als Empfänger (Eltern) oder Sender (Kind) fungiert ✅
@@ -63,9 +65,33 @@ Eine einfache Android Babyphone-App mit folgenden Funktionen:
   - **Automatisch im Kind-Modus**: Wenn das Kind-Gerät kein WLAN findet, erstellt es automatisch einen Hotspot
   - **API 26+ erforderlich**: Hotspot-Modus funktioniert ab Android 8.0 (Oreo)
   - **Einfache Verbindung**: SSID und Passwort werden in der App angezeigt
+- **Mobile Daten Modus**: Verbindung über mobile Daten mit Backend-Server ✅ **Neu!**
+  - **Backend erforderlich**: Benötigt einen PHP-Backend-Server (siehe `backend/babyphone/` Verzeichnis)
+  - **Signaling und Relay**: Der Server vermittelt Verbindungen und kann als Audio-Relay dienen
+  - **Einstellungen**: Aktivieren Sie den Modus in den App-Einstellungen und konfigurieren Sie die Backend-URL
+  - **Mehrere Apps möglich**: Die Backend-Struktur ermöglicht das Hosting mehrerer Apps auf einem Server
 
-**In Planung:**
-- **Mobile Daten Modus**: Für die Verbindung über mobile Daten ist ein Backend-Server erforderlich. Die App-Struktur ist bereits vorbereitet (OkHttp, Gson Bibliotheken sind eingebunden), aber das Backend muss noch implementiert werden. 🚧
+### Mobile Daten Modus einrichten
+
+1. **Backend-Server bereitstellen**:
+   - Siehe [Backend README](backend/README.md) für Installations- und Deployment-Anweisungen
+   - Hosting auf einem Server mit PHP-Unterstützung erforderlich
+   - HTTPS wird für Produktionsumgebungen dringend empfohlen
+   - Deploy nach `/var/www/html/babyphone/` für Produktion
+
+2. **App konfigurieren**:
+   - Öffnen Sie die Einstellungen in der App (⚙ Symbol)
+   - Aktivieren Sie "Mobile Daten-Modus aktivieren"
+   - Geben Sie die Backend-Server-URL ein:
+     - Lokal: `http://192.168.1.100:8080` (IP Ihres Computers)
+     - Produktiv: `https://ihr-server.de/babyphone`
+   - Speichern Sie die Einstellungen
+
+3. **Verbindung herstellen**:
+   - Beide Geräte müssen mit dem Internet verbunden sein (WiFi oder mobile Daten)
+   - Das Kind-Gerät registriert sich automatisch beim Backend
+   - Das Eltern-Gerät findet das Kind-Gerät über den Backend-Server
+   - Verbindung läuft primär über direkte P2P, mit Server-Relay als Fallback
 
 ### Wie funktioniert der Hotspot-Modus?
 
@@ -122,6 +148,14 @@ Die App benötigt folgende Berechtigungen:
 ```bash
 ./gradlew test
 ```
+
+### Backend-Server (für Mobile Daten-Modus)
+
+Siehe [Backend README](backend/README.md) für:
+- Installationsanweisungen
+- Deployment auf verschiedenen Servern (Apache, Nginx)
+- Konfiguration und Sicherheit
+- API-Dokumentation
 
 ## CI/CD
 
