@@ -36,7 +36,7 @@
     <string name="hotspot_instruction">Connect the parent device to this hotspot</string>
     <string name="wifi_mode">WiFi Mode</string>
     <string name="hotspot_mode">Hotspot Mode</string>
-    <string name="mobile_data_mode">Mobile Data Mode (Future)</string>
+    <string name="mobile_data_mode">Mobile Data Mode</string>
     <string name="no_connection">No Connection</string>
     <string name="creating_hotspot">Creating hotspot…</string>
     <string name="hotspot_failed">Hotspot creation failed: %1$s</string>

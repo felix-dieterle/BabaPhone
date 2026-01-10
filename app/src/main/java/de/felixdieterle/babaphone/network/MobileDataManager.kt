@@ -1,6 +1,9 @@
 package de.felixdieterle.babaphone.network
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.util.Base64
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -117,7 +120,7 @@ class MobileDataManager(
         heartbeatRunnable = Runnable {
             sendHeartbeat()
         }
-        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
+        Handler(Looper.getMainLooper()).postDelayed(
             heartbeatRunnable!!,
             HEARTBEAT_INTERVAL
         )
@@ -149,7 +152,7 @@ class MobileDataManager(
                     if (it.isSuccessful) {
                         Log.d(TAG, "Heartbeat sent")
                         // Schedule next heartbeat
-                        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
+                        Handler(Looper.getMainLooper()).postDelayed(
                             heartbeatRunnable!!,
                             HEARTBEAT_INTERVAL
                         )
@@ -287,7 +290,7 @@ class MobileDataManager(
      * Relay audio data through backend (fallback mode)
      */
     fun relayAudio(toDeviceId: String, audioData: ByteArray, callback: (Boolean) -> Unit) {
-        val base64Audio = android.util.Base64.encodeToString(audioData, android.util.Base64.NO_WRAP)
+        val base64Audio = Base64.encodeToString(audioData, Base64.NO_WRAP)
         
         val json = JsonObject().apply {
             addProperty("from_device_id", deviceId)
@@ -339,9 +342,9 @@ class MobileDataManager(
                             
                             packetsArray.forEach { packetElement ->
                                 val packet = packetElement.asJsonObject
-                                val audioData = android.util.Base64.decode(
+                                val audioData = Base64.decode(
                                     packet.get("audio_data").asString,
-                                    android.util.Base64.NO_WRAP
+                                    Base64.NO_WRAP
                                 )
                                 callback.onAudioReceived(audioData)
                             }
@@ -360,7 +363,7 @@ class MobileDataManager(
      */
     fun unregisterDevice(callback: (Boolean) -> Unit) {
         heartbeatRunnable?.let {
-            android.os.Handler(android.os.Looper.getMainLooper()).removeCallbacks(it)
+            Handler(Looper.getMainLooper()).removeCallbacks(it)
         }
         
         val json = JsonObject().apply {

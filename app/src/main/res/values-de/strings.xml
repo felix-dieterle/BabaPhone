@@ -36,7 +36,7 @@
     <string name="hotspot_instruction">Verbinden Sie das Eltern-Gerät mit diesem Hotspot</string>
     <string name="wifi_mode">WLAN-Modus</string>
     <string name="hotspot_mode">Hotspot-Modus</string>
-    <string name="mobile_data_mode">Mobile Daten-Modus (Zukünftig)</string>
+    <string name="mobile_data_mode">Mobile Daten-Modus</string>
     <string name="no_connection">Keine Verbindung</string>
     <string name="creating_hotspot">Erstelle Hotspot…</string>
     <string name="hotspot_failed">Hotspot-Erstellung fehlgeschlagen: %1$s</string>
