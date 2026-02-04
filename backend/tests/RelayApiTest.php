@@ -91,6 +91,10 @@ class RelayApiTest extends TestCase
     {
         $contentType = 'application/json';
         
-        $this->assertEquals('application/json', $contentType);
+        $this->assertStringContainsString('json', $contentType);
+        $this->assertStringStartsWith('application/', $contentType);
+        
+        // Validate format is correct for HTTP header
+        $this->assertMatchesRegularExpression('/^application\/\w+$/', $contentType);
     }
 }

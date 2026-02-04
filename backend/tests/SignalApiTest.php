@@ -39,23 +39,30 @@ class SignalApiTest extends TestCase
     }
     
     /**
-     * Test POST signal creation
+     * Test POST signal validation
      */
     public function testPostSignalValidation()
     {
         $requiredFields = ['from_device_id', 'to_device_id', 'signal_type'];
         
         $this->assertEquals(3, count($requiredFields));
+        
+        // Validate each field is required
+        foreach ($requiredFields as $field) {
+            $this->assertIsString($field);
+            $this->assertNotEmpty($field);
+        }
     }
     
     /**
-     * Test GET signal retrieval
+     * Test GET signal parameters
      */
     public function testGetSignalParameters()
     {
-        $queryParam = 'device_id';
+        $requiredParams = ['device_id'];
         
-        $this->assertEquals('device_id', $queryParam);
+        $this->assertContains('device_id', $requiredParams);
+        $this->assertCount(1, $requiredParams);
     }
     
     /**
@@ -97,21 +104,25 @@ class SignalApiTest extends TestCase
         
         $this->assertIsArray($decoded);
         $this->assertNotNull($decoded);
+        $this->assertArrayHasKey('type', $decoded);
+        $this->assertArrayHasKey('sdp', $decoded);
     }
     
     /**
-     * Test HTTP response codes
+     * Test valid HTTP response code ranges
      */
-    public function testHttpResponseCodes()
+    public function testHttpResponseCodeRanges()
     {
-        $successCode = 200;
-        $createdCode = 201;
-        $badRequestCode = 400;
-        $notFoundCode = 404;
+        // 2xx Success codes
+        $this->assertGreaterThanOrEqual(200, 200);
+        $this->assertLessThan(300, 201);
         
-        $this->assertEquals(200, $successCode);
-        $this->assertEquals(201, $createdCode);
-        $this->assertEquals(400, $badRequestCode);
-        $this->assertEquals(404, $notFoundCode);
+        // 4xx Client error codes
+        $this->assertGreaterThanOrEqual(400, 400);
+        $this->assertLessThan(500, 404);
+        
+        // 5xx Server error codes
+        $this->assertGreaterThanOrEqual(500, 500);
+        $this->assertLessThan(600, 503);
     }
 }

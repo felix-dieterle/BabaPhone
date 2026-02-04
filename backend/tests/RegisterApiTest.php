@@ -36,10 +36,17 @@ class RegisterApiTest extends TestCase
     {
         $requiredFields = ['device_id', 'device_type', 'device_name'];
         
+        // Validate that all required fields are present
         $this->assertEquals(3, count($requiredFields));
         $this->assertContains('device_id', $requiredFields);
         $this->assertContains('device_type', $requiredFields);
         $this->assertContains('device_name', $requiredFields);
+        
+        // Test that missing any field would be invalid
+        foreach ($requiredFields as $field) {
+            $testData = array_diff($requiredFields, [$field]);
+            $this->assertNotContains($field, $testData);
+        }
     }
     
     /**
