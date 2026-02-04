@@ -94,11 +94,13 @@ jobs:
     - name: Run backend integration tests
       run: |
         cd backend
-        php -S localhost:8080 -t babyphone > /dev/null 2>&1 &
-        sleep 2
+        php -S localhost:8080 -t babyphone > server.log 2>&1 &
+        SERVER_PID=$!
+        sleep 3
         chmod +x test-backend.sh
-        ./test-backend.sh http://localhost:8080 || true
-        pkill -f "php -S"
+        ./test-backend.sh http://localhost:8080 || TEST_RESULT=$?
+        kill $SERVER_PID 2>/dev/null || true
+        exit ${TEST_RESULT:-0}
     
     - name: Upload backend test results
       if: always()

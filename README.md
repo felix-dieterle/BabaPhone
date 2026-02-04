@@ -145,9 +145,30 @@ Die App benötigt folgende Berechtigungen:
 
 ### Tests
 
+**Umfassende Test-Suite:**
 ```bash
+# Android Unit-Tests
 ./gradlew test
+
+# Android Tests mit Coverage
+./gradlew test jacocoTestReport
+
+# Backend Tests
+cd backend && composer test
+
+# Alle Tests
+./gradlew test && cd backend && composer test
 ```
+
+**Weitere Informationen:**
+- [Vollständige Test-Strategie](TESTING.md)
+- [Tests ausführen](RUNNING_TESTS.md)
+- [Test-Infrastruktur](TEST_INFRASTRUCTURE.md)
+
+**Test-Abdeckung:**
+- Android Unit-Tests: > 70% der Business-Logik
+- Backend Unit-Tests: > 80% der API-Logik
+- Integration Tests: Vollständige kritische Workflows
 
 ### Backend-Server (für Mobile Daten-Modus)
 
@@ -161,8 +182,15 @@ Siehe [Backend README](backend/README.md) für:
 
 Das Projekt verwendet GitHub Actions für:
 
-- **Continuous Integration**: Automatische Tests bei jedem Pull Request
+- **Continuous Integration**: 
+  - Automatische Unit-Tests (Android & Backend) bei jedem Pull Request
+  - Lint-Analyse für Code-Qualität
+  - Code-Coverage-Berichte (Jacoco für Android, PHPUnit für Backend)
+  - Integration-Tests für Backend-APIs
 - **Automatische Releases**: Erstellung einer neuen Version bei jedem Merge in main
+- **Test-Artefakte**: Upload von Test-Ergebnissen und Coverage-Berichten
+
+Siehe `.github/workflows/android-ci.yml` für Details.
 
 ## Lizenz
 
