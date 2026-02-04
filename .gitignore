@@ -88,3 +88,13 @@ lint/tmp/
 
 # macOS
 .DS_Store
+
+# Backend dependencies and test artifacts
+backend/vendor/
+backend/.phpunit.result.cache
+backend/coverage/
+backend/babyphone/data/*.json
+
+# Test reports (generated, not committed)
+*.exec
+.phpunit.cache

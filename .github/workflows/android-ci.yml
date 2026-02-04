@@ -49,3 +49,63 @@ jobs:
       with:
         name: lint-results
         path: app/build/reports/lint-results-*.html
+    
+    - name: Generate test coverage report
+      if: always()
+      run: ./gradlew jacocoTestReport --no-daemon
+      continue-on-error: true
+    
+    - name: Upload coverage reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-reports
+        path: |
+          app/build/reports/jacoco/
+          app/build/reports/tests/
+      continue-on-error: true
+  
+  backend-test:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        tools: composer
+        coverage: none
+    
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        composer install --no-interaction --prefer-dist
+    
+    - name: Run backend unit tests
+      run: |
+        cd backend
+        composer test
+    
+    - name: Run backend integration tests
+      run: |
+        cd backend
+        php -S localhost:8080 -t babyphone > server.log 2>&1 &
+        SERVER_PID=$!
+        sleep 3
+        chmod +x test-backend.sh
+        ./test-backend.sh http://localhost:8080 || TEST_RESULT=$?
+        kill $SERVER_PID 2>/dev/null || true
+        exit ${TEST_RESULT:-0}
+    
+    - name: Upload backend test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-test-results
+        path: backend/.phpunit.result.cache
+      continue-on-error: true
